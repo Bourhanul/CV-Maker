@@ -48,6 +48,7 @@ window.login = () => {
     .catch(err => alert(err.message));
 };
 
+
 // ✅ Google Login
 window.googleLogin = () => {
   signInWithPopup(auth, provider)
@@ -61,3 +62,4 @@ window.googleLogin = () => {
 onAuthStateChanged(auth, user => {
   if (user) console.log("Logged in:", user.email);
 });
+
