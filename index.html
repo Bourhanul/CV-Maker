@@ -3,217 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Professional CV Maker Pro</title>
+  <title>Premium Sidebar CV Maker</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background:#f0f2f5; font-family: 'Inter', sans-serif; padding-bottom: 50px; }
-    h1 { text-align:center; margin-top:20px; font-weight: 800; color: #1a202c; }
-    .profile-img { width:110px; height:110px; border-radius:12px; object-fit:cover; display: none; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .cv-card { padding:25px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.05); background:#fff; height: 100%; transition: 0.3s; }
+    body { background:#f0f2f5; font-family: 'Segoe UI', sans-serif; padding-bottom: 50px; }
     
-    /* --- Template Styles --- */
-    /* 1. Modern (Dark) */
-    .template-modern { background:#1a202c !important; color:#fff !important; }
-    .template-modern h2, .template-modern h3 { color:#63b3ed; border-bottom: 1px solid #2d3748; padding-bottom: 8px; }
+    /* --- Premium Sidebar Template --- */
+    .template-sidebar { 
+      display: flex; 
+      background: #fff; 
+      min-height: 800px; 
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      border-radius: 0; 
+      padding: 0 !important;
+      overflow: hidden;
+    }
 
-    /* 2. Executive (Formal) */
-    .template-executive { border: 2px solid #2d3748; padding: 40px !important; color: #2d3748; }
-    .template-executive h2 { text-align: center; text-transform: uppercase; border-bottom: 2px solid #2d3748; }
-    .template-executive h3 { background: #f7fafc; padding: 5px 10px; border-left: 5px solid #2d3748; font-size: 1.1rem; }
+    /* বাম পাশের সাইডবার */
+    .sidebar { 
+      width: 35%; 
+      background: #8d7d77; /* ছবির মতো ব্রাউনিশ গ্রে কালার */
+      color: #fff; 
+      padding: 30px 20px;
+    }
 
-    /* 3. Minimalist (Clean) */
-    .template-minimalist { border-top: 15px solid #4a5568; color: #4a5568; }
-    .template-minimalist h2 { font-weight: 300; font-size: 2.5rem; color: #2d3748; }
-    .template-minimalist h3 { color: #2d3748; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; margin-top: 20px; }
+    .sidebar h3 { 
+      font-size: 1.2rem; 
+      border-bottom: 1px solid rgba(255,255,255,0.3); 
+      padding-bottom: 5px; 
+      margin-top: 25px; 
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-    .input-section h4 { font-size: 1.1rem; font-weight: 700; color: #4a5568; margin-top: 20px; border-left: 4px solid #4299e1; padding-left: 10px; }
-    .preview-container { position: sticky; top: 20px; }
+    .sidebar-img { 
+      width: 100%; 
+      aspect-ratio: 1/1; 
+      object-fit: cover; 
+      border: 5px solid #fff; 
+      margin-bottom: 20px;
+    }
+
+    /* ডান পাশের মেইন কন্টেন্ট */
+    .main-content { 
+      width: 65%; 
+      padding: 40px; 
+      color: #333;
+    }
+
+    .main-content h2 { 
+      font-size: 2.5rem; 
+      font-weight: bold; 
+      color: #8d7d77; 
+      margin-bottom: 10px;
+    }
+
+    .main-content h4 { 
+      font-size: 1.1rem; 
+      border-bottom: 2px solid #8d7d77; 
+      display: inline-block; 
+      margin-top: 20px; 
+      margin-bottom: 10px;
+      color: #444;
+      text-transform: uppercase;
+    }
+
+    .contact-info p { font-size: 0.85rem; margin-bottom: 5px; }
+    .cv-text { font-size: 0.9rem; line-height: 1.6; color: #555; }
+
+    /* ইনপুট সেকশন স্টাইল */
+    .input-card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
-  <h1>CV Maker Pro</h1>
 
-  <div class="container mt-4">
+  <div class="container mt-5">
     <div class="row g-4">
-      <div class="col-lg-5 input-section">
-        <div class="cv-card">
-          <h3 class="mb-4">CV Builder</h3>
+      
+      <div class="col-lg-4">
+        <div class="input-card">
+          <h4 class="mb-3">Edit Your CV</h4>
+          <input class="form-control mb-2" id="name" placeholder="Full Name (e.g. Yeasmin Akter)" oninput="updateCV()">
+          <input class="form-control mb-2" id="phone" placeholder="Phone Number" oninput="updateCV()">
+          <input class="form-control mb-2" id="email" placeholder="Email Address" oninput="updateCV()">
+          <input class="form-control mb-2" id="address" placeholder="Address" oninput="updateCV()">
           
-          <div class="mb-3">
-            <label class="form-label fw-bold">Template Style</label>
-            <select class="form-select border-primary" id="template" onchange="generateCV()">
-              <option value="template-minimalist">Minimalist (Clean)</option>
-              <option value="template-modern">Modern (Dark Mode)</option>
-              <option value="template-executive">Executive (Formal)</option>
-            </select>
-          </div>
+          <label class="mt-2 small fw-bold">Profile Photo</label>
+          <input class="form-control mb-3" type="file" accept="image/*" onchange="loadImg(event)">
 
-          <h4>Personal Information</h4>
-          <input class="form-control my-2" id="name" placeholder="Full Name" oninput="generateCV()" />
-          <input class="form-control my-2" id="title" placeholder="Job Title" oninput="generateCV()" />
-          <input class="form-control my-2" id="email" placeholder="Email Address" oninput="generateCV()" />
-          <input class="form-control my-2" id="phone" placeholder="Phone Number" oninput="generateCV()" />
-          <input class="form-control my-2" id="address" placeholder="Location" oninput="generateCV()" />
-          <input class="form-control my-2" type="file" accept="image/*" onchange="loadPhoto(event)" />
+          <label class="small fw-bold">Personal Summary</label>
+          <textarea class="form-control mb-3" id="summary" rows="4" oninput="updateCV()" placeholder="Professional summary..."></textarea>
 
-          <h4>Summary</h4>
-          <textarea class="form-control" id="summary" rows="3" placeholder="Brief about your career..." oninput="generateCV()"></textarea>
+          <label class="small fw-bold">Academic Qualification</label>
+          <textarea class="form-control mb-3" id="edu" rows="4" oninput="updateCV()" placeholder="Year | Degree | Institution..."></textarea>
 
-          <h4>Education</h4>
-          <div class="input-group mb-2">
-            <input class="form-control" id="degree" placeholder="Degree">
-            <input class="form-control" id="uni" placeholder="Uni/College">
-          </div>
-          <button class="btn btn-sm btn-outline-primary w-100" onclick="addEdu()">+ Add Education</button>
-          <ul id="edu-list" class="mt-2 list-group small"></ul>
+          <label class="small fw-bold">Skills</label>
+          <textarea class="form-control mb-3" id="skills" rows="3" oninput="updateCV()" placeholder="Skill 1, Skill 2..."></textarea>
 
-          <h4>Experience</h4>
-          <textarea class="form-control" id="exp" rows="3" placeholder="Work details..." oninput="generateCV()"></textarea>
-
-          <h4>Skills</h4>
-          <input class="form-control" id="skills" placeholder="JavaScript, Python, etc." oninput="generateCV()" />
-
-          <div class="mt-4 d-grid gap-2">
-            <button class="btn btn-primary" onclick="saveData()">Save Progress</button>
-            <button class="btn btn-warning" onclick="downloadPDF()">Download PDF</button>
-            <button class="btn btn-light border" onclick="clearAll()">Reset All</button>
+          <div class="d-grid gap-2">
+            <button class="btn btn-dark" onclick="window.print()">Download PDF (Print)</button>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-7 preview-container">
-        <div id="cv-preview" class="cv-card template-minimalist">
-          <div class="d-flex align-items-center gap-4">
-            <img id="p-img" class="profile-img" src="" />
-            <div>
-              <h2 id="p-name" class="mb-0">Your Name</h2>
-              <p id="p-title" class="fw-bold text-primary mb-0">Profession</p>
-              <small id="p-contact" class="text-muted"></small>
+      <div class="col-lg-8">
+        <div id="cv-preview" class="template-sidebar">
+          
+          <div class="sidebar">
+            <img id="p-img" class="sidebar-img" src="https://via.placeholder.com/150" alt="Profile">
+            
+            <div class="contact-info mt-4">
+                <p>📍 <span id="p-address">Location</span></p>
+                <p>📞 <span id="p-phone">017XXXXXXXX</span></p>
+                <p>📧 <span id="p-email">email@example.com</span></p>
+            </div>
+
+            <h3>Personal Summary</h3>
+            <p id="p-summary" class="small" style="text-align: justify; opacity: 0.9;">
+              Detailed summary goes here...
+            </p>
+
+            <h3>Skills</h3>
+            <ul id="p-skills" class="small ps-3" style="opacity: 0.9;"></ul>
+          </div>
+
+          <div class="main-content">
+            <h2 id="p-name">Yeasmin Akter Rinu</h2>
+            <hr>
+
+            <h4>Academic Qualification</h4>
+            <div id="p-edu" class="cv-text" style="white-space: pre-line;">
+              Education details...
+            </div>
+
+            <h4>Personal Information</h4>
+            <div class="cv-text">
+                <p>• <b>Gender:</b> Female</p>
+                <p>• <b>Nationality:</b> Bangladeshi</p>
+                <p>• <b>Religion:</b> Islam</p>
+                <p>• <b>Marital Status:</b> Unmarried</p>
             </div>
           </div>
 
-          <hr>
-
-          <div class="row">
-            <div class="col-12 mb-3">
-              <h3>Summary</h3>
-              <p id="p-summary" style="font-size: 0.95rem; line-height: 1.5;"></p>
-            </div>
-            <div class="col-md-7">
-              <h3>Experience</h3>
-              <p id="p-exp" style="white-space: pre-line; font-size: 0.9rem;"></p>
-            </div>
-            <div class="col-md-5">
-              <h3>Education</h3>
-              <ul id="p-edu" class="ps-3 small"></ul>
-              <h3>Skills</h3>
-              <p id="p-skills" class="small"></p>
-            </div>
-          </div>
         </div>
       </div>
+
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    let educations = [];
-    let photoData = "";
+    let photoBase64 = "";
 
-    function loadPhoto(e) {
+    function loadImg(e) {
       const reader = new FileReader();
       reader.onload = function() {
-        photoData = reader.result;
-        document.getElementById('p-img').src = photoData;
-        document.getElementById('p-img').style.display = 'block';
-      };
+        photoBase64 = reader.result;
+        document.getElementById('p-img').src = photoBase64;
+      }
       reader.readAsDataURL(e.target.files[0]);
     }
 
-    function addEdu() {
-      const d = document.getElementById('degree').value;
-      const u = document.getElementById('uni').value;
-      if(!d || !u) return;
-      educations.push({d, u});
-      renderEdu();
-      document.getElementById('degree').value = '';
-      document.getElementById('uni').value = '';
-    }
+    function updateCV() {
+      document.getElementById('p-name').innerText = document.getElementById('name').value || "Your Full Name";
+      document.getElementById('p-phone').innerText = document.getElementById('phone').value || "Phone Number";
+      document.getElementById('p-email').innerText = document.getElementById('email').value || "Email Address";
+      document.getElementById('p-address').innerText = document.getElementById('address').value || "Location";
+      document.getElementById('p-summary').innerText = document.getElementById('summary').value || "Your professional summary...";
+      document.getElementById('p-edu').innerText = document.getElementById('edu').value || "Academic details...";
 
-    function renderEdu() {
-      const list = document.getElementById('edu-list');
-      const pList = document.getElementById('p-edu');
-      list.innerHTML = pList.innerHTML = "";
-      educations.forEach((edu, i) => {
-        list.innerHTML += `<li class="list-group-item d-flex justify-content-between p-1">${edu.d} <button class="btn btn-danger btn-sm" onclick="educations.splice(${i},1);renderEdu()">x</button></li>`;
-        pList.innerHTML += `<li><b>${edu.d}</b><br>${edu.u}</li>`;
+      // স্কিলস লিস্ট আপডেট
+      const skillsArr = document.getElementById('skills').value.split(',');
+      const skillList = document.getElementById('p-skills');
+      skillList.innerHTML = "";
+      skillsArr.forEach(s => {
+        if(s.trim() !== "") {
+          const li = document.createElement('li');
+          li.innerText = s.trim();
+          skillList.appendChild(li);
+        }
       });
-    }
-
-    function generateCV() {
-      const template = document.getElementById('template').value;
-      document.getElementById('cv-preview').className = 'cv-card ' + template;
-      document.getElementById('p-name').innerText = document.getElementById('name').value || "Your Name";
-      document.getElementById('p-title').innerText = document.getElementById('title').value || "Profession";
-      document.getElementById('p-contact').innerText = `${document.getElementById('email').value} | ${document.getElementById('phone').value} | ${document.getElementById('address').value}`;
-      document.getElementById('p-summary').innerText = document.getElementById('summary').value;
-      document.getElementById('p-exp').innerText = document.getElementById('exp').value;
-      document.getElementById('p-skills').innerText = document.getElementById('skills').value;
-    }
-
-    function saveData() {
-      const data = {
-        name: document.getElementById('name').value,
-        title: document.getElementById('title').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        summary: document.getElementById('summary').value,
-        exp: document.getElementById('exp').value,
-        skills: document.getElementById('skills').value,
-        educations, photoData
-      };
-      localStorage.setItem('cv_pro_final', JSON.stringify(data));
-      alert("Progress Saved!");
-    }
-
-    window.onload = () => {
-      const saved = localStorage.getItem('cv_pro_final');
-      if(saved) {
-        const d = JSON.parse(saved);
-        document.getElementById('name').value = d.name || "";
-        document.getElementById('title').value = d.title || "";
-        document.getElementById('email').value = d.email || "";
-        document.getElementById('phone').value = d.phone || "";
-        document.getElementById('address').value = d.address || "";
-        document.getElementById('summary').value = d.summary || "";
-        document.getElementById('exp').value = d.exp || "";
-        document.getElementById('skills').value = d.skills || "";
-        educations = d.educations || [];
-        photoData = d.photoData || "";
-        if(photoData) {
-          document.getElementById('p-img').src = photoData;
-          document.getElementById('p-img').style.display = 'block';
-        }
-        renderEdu(); generateCV();
-      }
-    };
-
-    function clearAll() {
-        if(confirm("Delete everything?")) {
-            localStorage.removeItem('cv_pro_final');
-            location.reload();
-        }
-    }
-
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text(document.getElementById('p-name').innerText, 10, 20);
-      doc.text(document.getElementById('p-contact').innerText, 10, 30);
-      doc.text("EXPERIENCE", 10, 50);
-      doc.text(doc.splitTextToSize(document.getElementById('p-exp').innerText, 180), 10, 60);
-      doc.save("My_Professional_CV.pdf");
     }
   </script>
 </body>
