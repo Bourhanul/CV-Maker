@@ -9,12 +9,13 @@
     body { background:#f4f6f8; padding-bottom: 50px; font-family: 'Segoe UI', sans-serif; }
     h1 { text-align:center; margin-top:20px; font-weight: bold; color: #333; }
     .profile-img { width:120px; height:120px; border-radius:10px; object-fit:cover; margin-bottom:10px; display: none; border: 3px solid #38bdf8; }
-    .cv-card { padding:25px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); background:#fff; }
+    .cv-card { padding:25px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); background:#fff; transition: 0.3s; }
     .preview-box { position: sticky; top: 20px; }
     
     /* Templates */
     .template-classic { color: #333; border-top: 8px solid #0d6efd; }
     .template-modern { background:#0f172a; color:#fff; padding: 40px !important; }
+    .template-modern h2, .template-modern h3 { color:#38bdf8; border-bottom: 2px solid #38bdf8; padding-bottom: 5px; margin-top: 20px; }
     
     h3 { font-size: 1.2rem; font-weight: bold; margin-top: 15px; border-bottom: 1px solid #ddd; padding-bottom: 5px; text-transform: uppercase; }
     h4 { color: #0d6efd; margin-top: 20px; border-left: 4px solid #0d6efd; padding-left: 10px; }
@@ -30,17 +31,11 @@
       
       <div class="col-lg-6">
         <div class="cv-card">
-          <h2 class="mb-3">Personal & Family Details</h2>
+          <h2 class="mb-3">Personal Details</h2>
           <div class="row">
             <div class="col-md-6"><input class="form-control my-2" id="name" placeholder="Full Name" oninput="generateCV()" /></div>
             <div class="col-md-6"><input class="form-control my-2" id="title" placeholder="Professional Title" oninput="generateCV()" /></div>
           </div>
-          
-          <div class="row">
-            <div class="col-md-6"><input class="form-control my-2" id="fName" placeholder="Father's Name" oninput="generateCV()" /></div>
-            <div class="col-md-6"><input class="form-control my-2" id="mName" placeholder="Mother's Name" oninput="generateCV()" /></div>
-          </div>
-
           <input class="form-control my-2" id="emailInput" placeholder="Email Address" oninput="generateCV()" />
           <input class="form-control my-2" id="phone" placeholder="Phone Number" oninput="generateCV()" />
           <input class="form-control my-2" id="address" placeholder="Address" oninput="generateCV()" />
@@ -66,8 +61,11 @@
           <ul id="edu-list" class="list-group mb-3"></ul>
 
           <h4>Skills</h4>
-          <input class="form-control mb-2" id="skills" placeholder="Skills (e.g. Nursing, MS Office)" oninput="generateCV()" />
+          <input class="form-control mb-2" id="skills" placeholder="Skills (e.g. Nursing, PHP, Design)" oninput="generateCV()" />
           
+          <h4>Work Experience</h4>
+          <textarea class="form-control mb-3" id="experience" rows="3" placeholder="Experience details..." oninput="generateCV()"></textarea>
+
           <div class="btn-group-custom">
             <button class="btn btn-success px-4" onclick="saveToLocal()">Save Progress</button>
             <button class="btn btn-warning px-4" onclick="downloadPDF()">Download PDF</button>
@@ -84,22 +82,19 @@
                 <div>
                     <h2 id="cv-name-preview" class="mb-0">Your Name</h2>
                     <p id="cv-title-preview" class="text-primary fw-bold mb-0">Profession</p>
-                    <small id="cv-contact-preview">email@example.com | 017XXXXXXXX</small>
+                    <small id="cv-contact-preview">email@example.com | 0123456789</small><br>
+                    <small id="cv-address-preview"></small>
                 </div>
             </div>
             
-            <h3>Personal Information</h3>
-            <div class="preview-text">
-                <p class="mb-1"><b>Father's Name:</b> <span id="p-fName"></span></p>
-                <p class="mb-1"><b>Mother's Name:</b> <span id="p-mName"></span></p>
-                <p class="mb-1"><b>Address:</b> <span id="p-address"></span></p>
-            </div>
-
-            <h3>Professional Summary</h3>
+            <h3>Personal Summary</h3>
             <p id="cv-summary-preview" class="preview-text"></p>
 
             <h3>Education</h3>
             <ul id="cv-edu-preview" class="ps-3 preview-text"></ul>
+            
+            <h3>Experience</h3>
+            <p id="cv-experience-preview" class="preview-text" style="white-space: pre-line;"></p>
             
             <h3>Skills</h3>
             <p id="cv-skills-preview" class="preview-text"></p>
@@ -111,10 +106,12 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <script>
     let educations = [];
     let profileImageData = "";
 
+    // Load Data
     window.onload = function() {
       const savedData = localStorage.getItem('cv_pro_data');
       if(savedData) {
@@ -135,25 +132,26 @@
     };
 
     function loadPhoto(event){
+      const file = event.target.files[0];
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onloadend = function() {
           profileImageData = reader.result;
-          document.getElementById('cv-photo-preview').src = profileImageData;
-          document.getElementById('cv-photo-preview').style.display = 'block';
+          const output = document.getElementById('cv-photo-preview');
+          output.src = profileImageData;
+          output.style.display = 'block';
           generateCV();
       }
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(file);
     }
 
     function addItem(){
       const deg = document.getElementById('degree').value;
       const inst = document.getElementById('institution').value;
-      if(deg && inst) {
-          educations.push({deg, inst});
-          renderEducation();
-          document.getElementById('degree').value = '';
-          document.getElementById('institution').value = '';
-      }
+      if(!deg || !inst) return;
+      educations.push({deg, inst});
+      renderEducation();
+      document.getElementById('degree').value = '';
+      document.getElementById('institution').value = '';
     }
 
     function renderEducation(){
@@ -161,8 +159,8 @@
       const previewList = document.getElementById('cv-edu-preview');
       list.innerHTML = previewList.innerHTML = '';
       educations.forEach((e, i) => {
-        list.innerHTML += `<li class="list-group-item d-flex justify-content-between p-1 small">${e.deg} <button class='btn btn-sm btn-danger' onclick='educations.splice(${i},1);renderEducation()'>x</button></li>`;
-        previewList.innerHTML += `<li><b>${e.deg}</b> - ${e.inst}</li>`;
+        list.innerHTML += `<li class="list-group-item d-flex justify-content-between p-1 small">${e.deg} - ${e.inst} <button class='btn btn-sm btn-danger' onclick='educations.splice(${i},1);renderEducation()'>x</button></li>`;
+        previewList.innerHTML += `<li class="mb-2"><b>${e.deg}</b><br>${e.inst}</li>`;
       });
     }
 
@@ -170,10 +168,9 @@
       document.getElementById('cv-name-preview').innerText = document.getElementById('name').value || "Your Name";
       document.getElementById('cv-title-preview').innerText = document.getElementById('title').value || "Profession";
       document.getElementById('cv-contact-preview').innerText = `${document.getElementById('emailInput').value} | ${document.getElementById('phone').value}`;
-      document.getElementById('p-fName').innerText = document.getElementById('fName').value;
-      document.getElementById('p-mName').innerText = document.getElementById('mName').value;
-      document.getElementById('p-address').innerText = document.getElementById('address').value;
+      document.getElementById('cv-address-preview').innerText = document.getElementById('address').value;
       document.getElementById('cv-summary-preview').innerText = document.getElementById('summary').value;
+      document.getElementById('cv-experience-preview').innerText = document.getElementById('experience').value;
       document.getElementById('cv-skills-preview').innerText = document.getElementById('skills').value;
     }
 
@@ -185,58 +182,92 @@
       const data = {
         name: document.getElementById('name').value,
         title: document.getElementById('title').value,
-        fName: document.getElementById('fName').value,
-        mName: document.getElementById('mName').value,
         emailInput: document.getElementById('emailInput').value,
         phone: document.getElementById('phone').value,
         address: document.getElementById('address').value,
         summary: document.getElementById('summary').value,
         skills: document.getElementById('skills').value,
+        experience: document.getElementById('experience').value,
         template: document.getElementById('template').value,
         education: educations,
         photo: profileImageData
       };
       localStorage.setItem('cv_pro_data', JSON.stringify(data));
-      alert("CV Saved Locally!");
+      alert("CV Saved Successfully!");
     }
 
+    function clearData() { if(confirm("Clear everything?")) { localStorage.removeItem('cv_pro_data'); location.reload(); } }
+
+    // --- PDF Download with Image Support ---
     async function downloadPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         let y = 20;
 
+        // 1. Image & Header
         if (profileImageData) {
             try {
+                // Add Image (x, y, width, height)
                 doc.addImage(profileImageData, 'JPEG', 15, y, 30, 30);
-                doc.setFontSize(20);
-                doc.text(document.getElementById('name').value.toUpperCase(), 50, y + 12);
-                doc.setFontSize(10);
-                doc.text(document.getElementById('title').value, 50, y + 20);
+                doc.setFontSize(22);
+                doc.text(document.getElementById('name').value.toUpperCase() || "NAME", 50, y + 12);
+                doc.setFontSize(12);
+                doc.text(document.getElementById('title').value || "PROFESSION", 50, y + 20);
                 y += 40;
-            } catch (e) { y += 10; }
+            } catch (err) {
+                console.log("Image Error", err);
+                y += 10;
+            }
         } else {
-            doc.setFontSize(20);
-            doc.text(document.getElementById('name').value.toUpperCase(), 15, y);
+            doc.setFontSize(22);
+            doc.text(document.getElementById('name').value.toUpperCase() || "NAME", 15, y);
             y += 15;
         }
 
+        // 2. Contact Info
         doc.setFontSize(10);
-        doc.text(`Father's Name: ${document.getElementById('fName').value}`, 15, y); y += 6;
-        doc.text(`Mother's Name: ${document.getElementById('mName').value}`, 15, y); y += 6;
-        doc.text(`Contact: ${document.getElementById('emailInput').value} | ${document.getElementById('phone').value}`, 15, y); y += 6;
-        doc.line(15, y, 195, y); y += 10;
+        const contact = `${document.getElementById('emailInput').value} | ${document.getElementById('phone').value} | ${document.getElementById('address').value}`;
+        doc.text(contact, 15, y);
+        y += 5;
+        doc.line(15, y, 195, y);
+        y += 10;
 
-        doc.setFontSize(14); doc.text("EDUCATION", 15, y); y += 7;
-        doc.setFontSize(10);
-        educations.forEach(edu => {
-            doc.text(`• ${edu.deg} - ${edu.inst}`, 15, y);
-            y += 6;
-        });
+        // 3. Sections Generator
+        const addPdfSection = (title, content) => {
+            if (!content) return;
+            doc.setFontSize(14);
+            doc.setTextColor(0, 102, 204);
+            doc.text(title, 15, y);
+            y += 7;
+            doc.setFontSize(10);
+            doc.setTextColor(50);
+            const lines = doc.splitTextToSize(content, 175);
+            doc.text(lines, 15, y);
+            y += (lines.length * 6) + 7;
+        };
 
-        doc.save("Professional_CV.pdf");
+        addPdfSection("PERSONAL SUMMARY", document.getElementById('summary').value);
+
+        // 4. Education in PDF
+        if(educations.length > 0) {
+            doc.setFontSize(14);
+            doc.setTextColor(0, 102, 204);
+            doc.text("EDUCATION", 15, y);
+            y += 7;
+            doc.setFontSize(10);
+            doc.setTextColor(50);
+            educations.forEach(edu => {
+                doc.text(`• ${edu.deg} - ${edu.inst}`, 15, y);
+                y += 6;
+            });
+            y += 5;
+        }
+
+        addPdfSection("WORK EXPERIENCE", document.getElementById('experience').value);
+        addPdfSection("SKILLS", document.getElementById('skills').value);
+
+        doc.save("My_CV.pdf");
     }
-
-    function clearData() { if(confirm("Clear?")) { localStorage.removeItem('cv_pro_data'); location.reload(); } }
   </script>
 </body>
 </html>
