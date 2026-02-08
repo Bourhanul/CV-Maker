@@ -6,20 +6,28 @@
   <title>Professional CV Maker Pro</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background:#f4f6f8; padding-bottom: 50px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    h1 { text-align:center; margin-top:20px; font-weight: bold; color: #333; }
-    .profile-img { width:120px; height:120px; border-radius:10px; object-fit:cover; margin-bottom:10px; display: none; border: 3px solid #38bdf8; }
-    .cv-card { padding:25px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); background:#fff; }
-    .preview-box { position: sticky; top: 20px; }
+    body { background:#f0f2f5; font-family: 'Inter', sans-serif; padding-bottom: 50px; }
+    h1 { text-align:center; margin-top:20px; font-weight: 800; color: #1a202c; }
+    .profile-img { width:110px; height:110px; border-radius:12px; object-fit:cover; display: none; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .cv-card { padding:25px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.05); background:#fff; height: 100%; transition: 0.3s; }
     
-    /* Templates */
-    .template-classic { color: #333; }
-    .template-modern { background:#0f172a; color:#fff; padding: 40px !important; }
-    .template-modern h2, .template-modern h3 { color:#38bdf8; border-bottom: 2px solid #38bdf8; padding-bottom: 5px; margin-top: 20px; }
-    .template-modern hr { border-color: #38bdf8; opacity: 0.5; }
-    
-    h4 { color: #0d6efd; margin-top: 20px; border-left: 4px solid #0d6efd; padding-left: 10px; }
-    .btn-group-custom { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    /* --- Template Styles --- */
+    /* 1. Modern (Dark) */
+    .template-modern { background:#1a202c !important; color:#fff !important; }
+    .template-modern h2, .template-modern h3 { color:#63b3ed; border-bottom: 1px solid #2d3748; padding-bottom: 8px; }
+
+    /* 2. Executive (Formal) */
+    .template-executive { border: 2px solid #2d3748; padding: 40px !important; color: #2d3748; }
+    .template-executive h2 { text-align: center; text-transform: uppercase; border-bottom: 2px solid #2d3748; }
+    .template-executive h3 { background: #f7fafc; padding: 5px 10px; border-left: 5px solid #2d3748; font-size: 1.1rem; }
+
+    /* 3. Minimalist (Clean) */
+    .template-minimalist { border-top: 15px solid #4a5568; color: #4a5568; }
+    .template-minimalist h2 { font-weight: 300; font-size: 2.5rem; color: #2d3748; }
+    .template-minimalist h3 { color: #2d3748; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; margin-top: 20px; }
+
+    .input-section h4 { font-size: 1.1rem; font-weight: 700; color: #4a5568; margin-top: 20px; border-left: 4px solid #4299e1; padding-left: 10px; }
+    .preview-container { position: sticky; top: 20px; }
   </style>
 </head>
 <body>
@@ -27,246 +35,185 @@
 
   <div class="container mt-4">
     <div class="row g-4">
-      
-      <div class="col-lg-6">
+      <div class="col-lg-5 input-section">
         <div class="cv-card">
-          <h2 class="mb-3">Personal Details</h2>
-          <div class="row">
-            <div class="col-md-6"><input class="form-control my-2" id="name" placeholder="Full Name" oninput="generateCV()" /></div>
-            <div class="col-md-6"><input class="form-control my-2" id="title" placeholder="Professional Title (e.g. Web Developer)" oninput="generateCV()" /></div>
-          </div>
-          <input class="form-control my-2" id="emailInput" placeholder="Email Address" oninput="generateCV()" />
-          <input class="form-control my-2" id="phone" placeholder="Phone Number" oninput="generateCV()" />
-          <input class="form-control my-2" id="address" placeholder="Address (City, Country)" oninput="generateCV()" />
+          <h3 class="mb-4">CV Builder</h3>
           
-          <label class="mt-2 font-weight-bold">Profile Photo</label>
-          <input class="form-control mb-3" type="file" accept="image/*" onchange="loadPhoto(event)" />
+          <div class="mb-3">
+            <label class="form-label fw-bold">Template Style</label>
+            <select class="form-select border-primary" id="template" onchange="generateCV()">
+              <option value="template-minimalist">Minimalist (Clean)</option>
+              <option value="template-modern">Modern (Dark Mode)</option>
+              <option value="template-executive">Executive (Formal)</option>
+            </select>
+          </div>
 
-          <h4>Professional Summary</h4>
-          <textarea class="form-control mb-3" id="summary" rows="3" placeholder="Write a brief about yourself..." oninput="generateCV()"></textarea>
+          <h4>Personal Information</h4>
+          <input class="form-control my-2" id="name" placeholder="Full Name" oninput="generateCV()" />
+          <input class="form-control my-2" id="title" placeholder="Job Title" oninput="generateCV()" />
+          <input class="form-control my-2" id="email" placeholder="Email Address" oninput="generateCV()" />
+          <input class="form-control my-2" id="phone" placeholder="Phone Number" oninput="generateCV()" />
+          <input class="form-control my-2" id="address" placeholder="Location" oninput="generateCV()" />
+          <input class="form-control my-2" type="file" accept="image/*" onchange="loadPhoto(event)" />
 
-          <label>Template Style</label>
-          <select class="form-select mb-3" id="template" onchange="changeTemplate()">
-            <option value="template-classic">Classic (Light)</option>
-            <option value="template-modern">Modern (Dark)</option>
-          </select>
+          <h4>Summary</h4>
+          <textarea class="form-control" id="summary" rows="3" placeholder="Brief about your career..." oninput="generateCV()"></textarea>
 
           <h4>Education</h4>
-          <div class="input-group mb-1">
-            <input class="form-control" id="degree" placeholder="Degree" />
-            <input class="form-control" id="institution" placeholder="University" />
+          <div class="input-group mb-2">
+            <input class="form-control" id="degree" placeholder="Degree">
+            <input class="form-control" id="uni" placeholder="Uni/College">
           </div>
-          <button class="btn btn-outline-primary btn-sm w-100 mb-3" onclick="addItem('edu')">+ Add Education</button>
-          <ul id="edu-list" class="list-group mb-3"></ul>
+          <button class="btn btn-sm btn-outline-primary w-100" onclick="addEdu()">+ Add Education</button>
+          <ul id="edu-list" class="mt-2 list-group small"></ul>
 
-          <h4>Skills & Languages</h4>
-          <input class="form-control mb-2" id="skills" placeholder="Skills (e.g. JavaScript, Python, PHP)" oninput="generateCV()" />
-          <input class="form-control mb-3" id="languages" placeholder="Languages (e.g. English, Bangla)" oninput="generateCV()" />
-          
-          <h4>Work Experience</h4>
-          <textarea class="form-control mb-3" id="experience" rows="3" placeholder="Company Name - Position (Year)" oninput="generateCV()"></textarea>
+          <h4>Experience</h4>
+          <textarea class="form-control" id="exp" rows="3" placeholder="Work details..." oninput="generateCV()"></textarea>
 
-          <h4>Projects & References</h4>
-          <textarea class="form-control mb-2" id="projects" rows="2" placeholder="Your top projects..." oninput="generateCV()"></textarea>
-          <textarea class="form-control mb-3" id="references" rows="2" placeholder="References (Optional)" oninput="generateCV()"></textarea>
+          <h4>Skills</h4>
+          <input class="form-control" id="skills" placeholder="JavaScript, Python, etc." oninput="generateCV()" />
 
-          <div class="btn-group-custom">
-            <button class="btn btn-success px-4" onclick="saveToLocal()">Save Progress</button>
-            <button class="btn btn-warning px-4" onclick="downloadPDF()">Download PDF</button>
-            <button class="btn btn-danger px-4" onclick="clearData()">Reset</button>
+          <div class="mt-4 d-grid gap-2">
+            <button class="btn btn-primary" onclick="saveData()">Save Progress</button>
+            <button class="btn btn-warning" onclick="downloadPDF()">Download PDF</button>
+            <button class="btn btn-light border" onclick="clearAll()">Reset All</button>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-6">
-        <div class="preview-box">
-          <div id="cv-preview" class="cv-card template-classic">
-            <div class="d-flex align-items-center gap-4 mb-4">
-                <img id="cv-photo-preview" class="profile-img" src="" />
-                <div>
-                    <h2 id="cv-name-preview" class="mb-0">Your Name</h2>
-                    <p id="cv-title-preview" class="text-primary fw-bold mb-0">Professional Title</p>
-                    <small id="cv-contact-preview">email@example.com | 0123456789</small><br>
-                    <small id="cv-address-preview"></small>
-                </div>
+      <div class="col-lg-7 preview-container">
+        <div id="cv-preview" class="cv-card template-minimalist">
+          <div class="d-flex align-items-center gap-4">
+            <img id="p-img" class="profile-img" src="" />
+            <div>
+              <h2 id="p-name" class="mb-0">Your Name</h2>
+              <p id="p-title" class="fw-bold text-primary mb-0">Profession</p>
+              <small id="p-contact" class="text-muted"></small>
             </div>
-            
-            <div id="summary-sec">
-                <h3>Summary</h3>
-                <p id="cv-summary-preview"></p>
+          </div>
+
+          <hr>
+
+          <div class="row">
+            <div class="col-12 mb-3">
+              <h3>Summary</h3>
+              <p id="p-summary" style="font-size: 0.95rem; line-height: 1.5;"></p>
             </div>
-
-            <div class="row">
-                <div class="col-7">
-                    <h3>Experience</h3>
-                    <p id="cv-experience-preview" style="white-space: pre-line;"></p>
-                    
-                    <h3>Projects</h3>
-                    <p id="cv-projects-preview" style="white-space: pre-line;"></p>
-                </div>
-                <div class="col-5">
-                    <h3>Education</h3>
-                    <ul id="cv-edu-preview" class="ps-3"></ul>
-                    
-                    <h3>Skills</h3>
-                    <p id="cv-skills-preview"></p>
-
-                    <h3>Languages</h3>
-                    <p id="cv-lang-preview"></p>
-                </div>
+            <div class="col-md-7">
+              <h3>Experience</h3>
+              <p id="p-exp" style="white-space: pre-line; font-size: 0.9rem;"></p>
             </div>
-
-            <div id="ref-sec">
-                <h3>References</h3>
-                <p id="cv-ref-preview" class="small"></p>
+            <div class="col-md-5">
+              <h3>Education</h3>
+              <ul id="p-edu" class="ps-3 small"></ul>
+              <h3>Skills</h3>
+              <p id="p-skills" class="small"></p>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
   <script>
     let educations = [];
-    let profileImageData = "";
+    let photoData = "";
 
-    // সাইট লোড
-    window.onload = function() {
-      const savedData = localStorage.getItem('cv_pro_data');
-      if(savedData) {
-        const d = JSON.parse(savedData);
-        Object.keys(d).forEach(key => {
-            if(document.getElementById(key)) document.getElementById(key).value = d[key];
-        });
-        educations = d.education || [];
-        profileImageData = d.photo || "";
-        if(profileImageData) {
-            const img = document.getElementById('cv-photo-preview');
-            img.src = profileImageData;
-            img.style.display = 'block';
-        }
-        renderEducation();
-        generateCV();
-        changeTemplate();
-      }
-    };
-
-    // ফটো হ্যান্ডেল (Base64)
-    function loadPhoto(event){
-      const file = event.target.files[0];
+    function loadPhoto(e) {
       const reader = new FileReader();
-      reader.onloadend = function() {
-          profileImageData = reader.result;
-          const output = document.getElementById('cv-photo-preview');
-          output.src = profileImageData;
-          output.style.display = 'block';
-      }
-      reader.readAsDataURL(file);
+      reader.onload = function() {
+        photoData = reader.result;
+        document.getElementById('p-img').src = photoData;
+        document.getElementById('p-img').style.display = 'block';
+      };
+      reader.readAsDataURL(e.target.files[0]);
     }
 
-    function addItem(type){
-      const deg = document.getElementById('degree').value;
-      const inst = document.getElementById('institution').value;
-      if(!deg || !inst) return alert("Fill fields");
-      educations.push({deg, inst});
-      renderEducation();
+    function addEdu() {
+      const d = document.getElementById('degree').value;
+      const u = document.getElementById('uni').value;
+      if(!d || !u) return;
+      educations.push({d, u});
+      renderEdu();
       document.getElementById('degree').value = '';
-      document.getElementById('institution').value = '';
+      document.getElementById('uni').value = '';
     }
 
-    function renderEducation(){
+    function renderEdu() {
       const list = document.getElementById('edu-list');
-      const previewList = document.getElementById('cv-edu-preview');
-      list.innerHTML = previewList.innerHTML = '';
-      educations.forEach((e, i) => {
-        list.innerHTML += `<li class="list-group-item d-flex justify-content-between p-1 small">${e.deg} - ${e.inst} <button class='btn btn-sm btn-danger' onclick='educations.splice(${i},1);renderEducation()'>x</button></li>`;
-        previewList.innerHTML += `<li><b>${e.deg}</b><br>${e.inst}</li>`;
+      const pList = document.getElementById('p-edu');
+      list.innerHTML = pList.innerHTML = "";
+      educations.forEach((edu, i) => {
+        list.innerHTML += `<li class="list-group-item d-flex justify-content-between p-1">${edu.d} <button class="btn btn-danger btn-sm" onclick="educations.splice(${i},1);renderEdu()">x</button></li>`;
+        pList.innerHTML += `<li><b>${edu.d}</b><br>${edu.u}</li>`;
       });
     }
 
-    function generateCV(){
-      document.getElementById('cv-name-preview').innerText = document.getElementById('name').value || "Your Name";
-      document.getElementById('cv-title-preview').innerText = document.getElementById('title').value || "Professional Title";
-      document.getElementById('cv-contact-preview').innerText = `${document.getElementById('emailInput').value} | ${document.getElementById('phone').value}`;
-      document.getElementById('cv-address-preview').innerText = document.getElementById('address').value;
-      document.getElementById('cv-summary-preview').innerText = document.getElementById('summary').value;
-      document.getElementById('cv-experience-preview').innerText = document.getElementById('experience').value;
-      document.getElementById('cv-skills-preview').innerText = document.getElementById('skills').value;
-      document.getElementById('cv-lang-preview').innerText = document.getElementById('languages').value;
-      document.getElementById('cv-projects-preview').innerText = document.getElementById('projects').value;
-      document.getElementById('cv-ref-preview').innerText = document.getElementById('references').value;
+    function generateCV() {
+      const template = document.getElementById('template').value;
+      document.getElementById('cv-preview').className = 'cv-card ' + template;
+      document.getElementById('p-name').innerText = document.getElementById('name').value || "Your Name";
+      document.getElementById('p-title').innerText = document.getElementById('title').value || "Profession";
+      document.getElementById('p-contact').innerText = `${document.getElementById('email').value} | ${document.getElementById('phone').value} | ${document.getElementById('address').value}`;
+      document.getElementById('p-summary').innerText = document.getElementById('summary').value;
+      document.getElementById('p-exp').innerText = document.getElementById('exp').value;
+      document.getElementById('p-skills').innerText = document.getElementById('skills').value;
     }
 
-    function changeTemplate(){
-      document.getElementById('cv-preview').className = 'cv-card ' + document.getElementById('template').value;
-    }
-
-    function saveToLocal(){
+    function saveData() {
       const data = {
         name: document.getElementById('name').value,
         title: document.getElementById('title').value,
-        emailInput: document.getElementById('emailInput').value,
+        email: document.getElementById('email').value,
         phone: document.getElementById('phone').value,
         address: document.getElementById('address').value,
         summary: document.getElementById('summary').value,
+        exp: document.getElementById('exp').value,
         skills: document.getElementById('skills').value,
-        languages: document.getElementById('languages').value,
-        experience: document.getElementById('experience').value,
-        projects: document.getElementById('projects').value,
-        references: document.getElementById('references').value,
-        template: document.getElementById('template').value,
-        education: educations,
-        photo: profileImageData
+        educations, photoData
       };
-      localStorage.setItem('cv_pro_data', JSON.stringify(data));
-      alert("Professional CV Saved!");
+      localStorage.setItem('cv_pro_final', JSON.stringify(data));
+      alert("Progress Saved!");
     }
 
-    function clearData() { if(confirm("Clear everything?")) { localStorage.removeItem('cv_pro_data'); location.reload(); } }
+    window.onload = () => {
+      const saved = localStorage.getItem('cv_pro_final');
+      if(saved) {
+        const d = JSON.parse(saved);
+        document.getElementById('name').value = d.name || "";
+        document.getElementById('title').value = d.title || "";
+        document.getElementById('email').value = d.email || "";
+        document.getElementById('phone').value = d.phone || "";
+        document.getElementById('address').value = d.address || "";
+        document.getElementById('summary').value = d.summary || "";
+        document.getElementById('exp').value = d.exp || "";
+        document.getElementById('skills').value = d.skills || "";
+        educations = d.educations || [];
+        photoData = d.photoData || "";
+        if(photoData) {
+          document.getElementById('p-img').src = photoData;
+          document.getElementById('p-img').style.display = 'block';
+        }
+        renderEdu(); generateCV();
+      }
+    };
 
-    async function downloadPDF(){
+    function clearAll() {
+        if(confirm("Delete everything?")) {
+            localStorage.removeItem('cv_pro_final');
+            location.reload();
+        }
+    }
+
+    function downloadPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      let y = 20;
-
-      // ছবি যোগ করা
-      if(profileImageData) {
-        doc.addImage(profileImageData, 'JPEG', 10, y, 30, 30);
-        doc.text(document.getElementById('name').value.toUpperCase(), 45, y + 10);
-        doc.setFontSize(10);
-        doc.text(document.getElementById('title').value, 45, y + 16);
-        y += 35;
-      } else {
-        doc.setFontSize(22);
-        doc.text(document.getElementById('name').value.toUpperCase(), 10, y);
-        y += 15;
-      }
-
-      doc.setFontSize(10);
-      doc.text(`${document.getElementById('emailInput').value} | ${document.getElementById('phone').value} | ${document.getElementById('address').value}`, 10, y);
-      y += 10; doc.line(10, y, 200, y); y += 10;
-
-      const sections = [
-          { title: "SUMMARY", content: document.getElementById('summary').value },
-          { title: "EXPERIENCE", content: document.getElementById('experience').value },
-          { title: "SKILLS", content: document.getElementById('skills').value },
-          { title: "PROJECTS", content: document.getElementById('projects').value }
-      ];
-
-      sections.forEach(s => {
-          if(s.content) {
-            doc.setFont(undefined, 'bold'); doc.text(s.title, 10, y); y += 7;
-            doc.setFont(undefined, 'normal');
-            const lines = doc.splitTextToSize(s.content, 180);
-            doc.text(lines, 10, y);
-            y += (lines.length * 7) + 5;
-          }
-      });
-
-      doc.save("Professional_CV.pdf");
+      doc.text(document.getElementById('p-name').innerText, 10, 20);
+      doc.text(document.getElementById('p-contact').innerText, 10, 30);
+      doc.text("EXPERIENCE", 10, 50);
+      doc.text(doc.splitTextToSize(document.getElementById('p-exp').innerText, 180), 10, 60);
+      doc.save("My_Professional_CV.pdf");
     }
   </script>
 </body>
