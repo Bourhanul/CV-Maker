@@ -3,271 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Professional CV Maker Pro</title>
+  <title>Complete Professional CV Maker</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background:#f4f6f8; padding-bottom: 50px; font-family: 'Segoe UI', sans-serif; }
-    h1 { text-align:center; margin-top:20px; font-weight: bold; color: #333; }
-    .profile-img { width:120px; height:120px; border-radius:10px; object-fit:cover; margin-bottom:10px; display: none; border: 3px solid #38bdf8; }
-    .cv-card { padding:25px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); background:#fff; transition: 0.3s; }
+    body { background:#f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding-bottom: 50px; }
+    .main-title { text-align:center; margin: 30px 0; font-weight: 800; color: #1a73e8; text-transform: uppercase; }
+    .cv-card { padding:30px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.08); background:#fff; border: none; }
     .preview-box { position: sticky; top: 20px; }
+    .profile-img { width:120px; height:120px; border-radius:12px; object-fit:cover; display: none; border: 4px solid #e8f0fe; margin-bottom: 15px; }
     
-    /* Templates */
-    .template-classic { color: #333; border-top: 8px solid #0d6efd; }
-    .template-modern { background:#0f172a; color:#fff; padding: 40px !important; }
-    .template-modern h2, .template-modern h3 { color:#38bdf8; border-bottom: 2px solid #38bdf8; padding-bottom: 5px; margin-top: 20px; }
-    
-    h3 { font-size: 1.2rem; font-weight: bold; margin-top: 15px; border-bottom: 1px solid #ddd; padding-bottom: 5px; text-transform: uppercase; }
-    h4 { color: #0d6efd; margin-top: 20px; border-left: 4px solid #0d6efd; padding-left: 10px; }
-    .preview-text { font-size: 0.95rem; line-height: 1.6; }
-    .btn-group-custom { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    /* CV Styling */
+    .template-classic { border-top: 10px solid #1a73e8; }
+    h3 { font-size: 1.1rem; font-weight: bold; margin-top: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px; color: #1a73e8; text-transform: uppercase; }
+    .info-row { display: flex; margin-bottom: 6px; font-size: 0.95rem; line-height: 1.5; }
+    .info-label { width: 160px; font-weight: 600; color: #555; }
+    .preview-text { font-size: 0.95rem; color: #333; white-space: pre-line; }
+
+    @media print {
+      .no-print { display: none; }
+      body { background: white; padding: 0; }
+      .cv-card { box-shadow: none; border: none; padding: 0; }
+      .preview-box { position: static; }
+    }
   </style>
 </head>
 <body>
-  <h1>CV Maker Pro</h1>
 
-  <div class="container mt-4">
-    <div class="row g-4">
-      
-      <div class="col-lg-6">
-        <div class="cv-card">
-          <h2 class="mb-3">Personal Details</h2>
-          <div class="row">
-            <div class="col-md-6"><input class="form-control my-2" id="name" placeholder="Full Name" oninput="generateCV()" /></div>
-            <div class="col-md-6"><input class="form-control my-2" id="title" placeholder="Professional Title" oninput="generateCV()" /></div>
-          </div>
-          <input class="form-control my-2" id="emailInput" placeholder="Email Address" oninput="generateCV()" />
-          <input class="form-control my-2" id="phone" placeholder="Phone Number" oninput="generateCV()" />
-          <input class="form-control my-2" id="address" placeholder="Address" oninput="generateCV()" />
-          
-          <label class="mt-2 fw-bold">Profile Photo</label>
-          <input class="form-control mb-3" type="file" accept="image/*" onchange="loadPhoto(event)" />
+<div class="container mt-2">
+  <h1 class="main-title no-print">Pro CV Builder</h1>
+  
+  <div class="row g-4">
+    <div class="col-lg-5 no-print">
+      <div class="cv-card">
+        <h4 class="mb-4 text-secondary">Enter Your Details</h4>
+        
+        <div class="mb-3">
+          <label class="form-label fw-bold">Basic Information</label>
+          <input class="form-control mb-2" id="name" placeholder="Full Name" oninput="update()">
+          <input class="form-control mb-2" id="title" placeholder="Professional Title (e.g. Staff Nurse)" oninput="update()">
+        </div>
 
-          <h4>Professional Summary</h4>
-          <textarea class="form-control mb-3" id="summary" rows="3" placeholder="Tell about yourself..." oninput="generateCV()"></textarea>
-
-          <label class="fw-bold">Select Template Style</label>
-          <select class="form-select mb-3" id="template" onchange="changeTemplate()">
-            <option value="template-classic">Classic (Light)</option>
-            <option value="template-modern">Modern (Dark)</option>
-          </select>
-
-          <h4>Academic Qualification</h4>
-          <div class="input-group mb-1">
-            <input class="form-control" id="degree" placeholder="Degree/Year" />
-            <input class="form-control" id="institution" placeholder="Institution" />
-          </div>
-          <button class="btn btn-outline-primary btn-sm w-100 mb-3" onclick="addItem()">+ Add Education</button>
-          <ul id="edu-list" class="list-group mb-3"></ul>
-
-          <h4>Skills</h4>
-          <input class="form-control mb-2" id="skills" placeholder="Skills (e.g. Nursing, PHP, Design)" oninput="generateCV()" />
-          
-          <h4>Work Experience</h4>
-          <textarea class="form-control mb-3" id="experience" rows="3" placeholder="Experience details..." oninput="generateCV()"></textarea>
-
-          <div class="btn-group-custom">
-            <button class="btn btn-success px-4" onclick="saveToLocal()">Save Progress</button>
-            <button class="btn btn-warning px-4" onclick="downloadPDF()">Download PDF</button>
-            <button class="btn btn-danger px-4" onclick="clearData()">Reset</button>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Family & Personal</label>
+          <input class="form-control mb-2" id="fName" placeholder="Father's Name" oninput="update()">
+          <input class="form-control mb-2" id="mName" placeholder="Mother's Name" oninput="update()">
+          <div class="row g-2">
+            <div class="col-6"><input class="form-control" id="religion" placeholder="Religion" oninput="update()"></div>
+            <div class="col-6"><input class="form-control" id="marital" placeholder="Marital Status" oninput="update()"></div>
           </div>
         </div>
-      </div>
 
-      <div class="col-lg-6">
-        <div class="preview-box">
-          <div id="cv-preview" class="cv-card template-classic">
-            <div class="d-flex align-items-center gap-4 mb-4">
-                <img id="cv-photo-preview" class="profile-img" src="" />
-                <div>
-                    <h2 id="cv-name-preview" class="mb-0">Your Name</h2>
-                    <p id="cv-title-preview" class="text-primary fw-bold mb-0">Profession</p>
-                    <small id="cv-contact-preview">email@example.com | 0123456789</small><br>
-                    <small id="cv-address-preview"></small>
-                </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Contact & Photo</label>
+          <input class="form-control mb-2" id="phone" placeholder="Phone Number" oninput="update()">
+          <input class="form-control mb-2" id="email" placeholder="Email Address" oninput="update()">
+          <input class="form-control mb-2" id="address" placeholder="Full Address" oninput="update()">
+          <input type="file" class="form-control" accept="image/*" onchange="previewImg(event)">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Experience & Education</label>
+          <textarea class="form-control mb-2" id="edu" rows="4" placeholder="Education (Degree, Institution, Year, Result)" oninput="update()"></textarea>
+          <textarea class="form-control mb-2" id="exp" rows="3" placeholder="Work Experience (if any)" oninput="update()"></textarea>
+          <textarea class="form-control mb-2" id="skills" rows="2" placeholder="Skills (e.g. MS Word, Patient Management)" oninput="update()"></textarea>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary btn-lg" onclick="window.print()">Download as PDF</button>
+          <button class="btn btn-outline-danger btn-sm" onclick="confirm('Clear all?') && location.reload()">Reset Form</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="preview-box">
+        <div id="cv-preview" class="cv-card template-classic">
+          <div class="d-flex align-items-start gap-4 mb-4">
+            <img id="p-img" class="profile-img">
+            <div class="flex-grow-1">
+              <h2 id="p-name" class="fw-bold text-uppercase mb-1" style="color: #111;">YOUR NAME</h2>
+              <p id="p-title" class="text-primary fw-bold mb-2">Professional Title</p>
+              <div class="small text-muted">
+                <span id="p-phone"></span> | <span id="p-email"></span>
+              </div>
             </div>
-            
-            <h3>Personal Summary</h3>
-            <p id="cv-summary-preview" class="preview-text"></p>
-
-            <h3>Education</h3>
-            <ul id="cv-edu-preview" class="ps-3 preview-text"></ul>
-            
-            <h3>Experience</h3>
-            <p id="cv-experience-preview" class="preview-text" style="white-space: pre-line;"></p>
-            
-            <h3>Skills</h3>
-            <p id="cv-skills-preview" class="preview-text"></p>
           </div>
+
+          <h3>Personal Information</h3>
+          <div class="preview-text">
+            <div class="info-row"><div class="info-label">Father's Name</div>: <span id="p-fName" class="ms-2"></span></div>
+            <div class="info-row"><div class="info-label">Mother's Name</div>: <span id="p-mName" class="ms-2"></span></div>
+            <div class="info-row"><div class="info-label">Religion</div>: <span id="p-religion" class="ms-2"></span></div>
+            <div class="info-row"><div class="info-label">Marital Status</div>: <span id="p-marital" class="ms-2"></span></div>
+            <div class="info-row"><div class="info-label">Address</div>: <span id="p-address" class="ms-2"></span></div>
+          </div>
+
+          <h3>Educational Qualification</h3>
+          <p id="p-edu" class="preview-text"></p>
+
+          <h3>Work Experience</h3>
+          <p id="p-exp" class="preview-text"></p>
+
+          <h3>Skills & Expertise</h3>
+          <p id="p-skills" class="preview-text"></p>
         </div>
       </div>
-
     </div>
   </div>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  let photoBase64 = "";
 
-  <script>
-    let educations = [];
-    let profileImageData = "";
-
-    // Load Data
-    window.onload = function() {
-      const savedData = localStorage.getItem('cv_pro_data');
-      if(savedData) {
-        const d = JSON.parse(savedData);
-        Object.keys(d).forEach(key => {
-            if(document.getElementById(key)) document.getElementById(key).value = d[key] || "";
-        });
-        educations = d.education || [];
-        profileImageData = d.photo || "";
-        if(profileImageData) {
-            const img = document.getElementById('cv-photo-preview');
-            img.src = profileImageData;
-            img.style.display = 'block';
-        }
-        renderEducation();
-        generateCV();
-      }
-    };
-
-    function loadPhoto(event){
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = function() {
-          profileImageData = reader.result;
-          const output = document.getElementById('cv-photo-preview');
-          output.src = profileImageData;
-          output.style.display = 'block';
-          generateCV();
-      }
-      reader.readAsDataURL(file);
+  function previewImg(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+      photoBase64 = reader.result;
+      const output = document.getElementById('p-img');
+      output.src = photoBase64;
+      output.style.display = 'block';
     }
+    reader.readAsDataURL(event.target.files[0]);
+  }
 
-    function addItem(){
-      const deg = document.getElementById('degree').value;
-      const inst = document.getElementById('institution').value;
-      if(!deg || !inst) return;
-      educations.push({deg, inst});
-      renderEducation();
-      document.getElementById('degree').value = '';
-      document.getElementById('institution').value = '';
+  function update() {
+    const fields = ['name', 'title', 'fName', 'mName', 'religion', 'marital', 'phone', 'email', 'address', 'edu', 'exp', 'skills'];
+    fields.forEach(id => {
+      let val = document.getElementById(id).value;
+      document.getElementById('p-' + id).innerText = val || "";
+    });
+    
+    // Force name to uppercase for professional look
+    if(document.getElementById('name').value === "") {
+        document.getElementById('p-name').innerText = "YOUR NAME";
     }
+  }
+</script>
 
-    function renderEducation(){
-      const list = document.getElementById('edu-list');
-      const previewList = document.getElementById('cv-edu-preview');
-      list.innerHTML = previewList.innerHTML = '';
-      educations.forEach((e, i) => {
-        list.innerHTML += `<li class="list-group-item d-flex justify-content-between p-1 small">${e.deg} - ${e.inst} <button class='btn btn-sm btn-danger' onclick='educations.splice(${i},1);renderEducation()'>x</button></li>`;
-        previewList.innerHTML += `<li class="mb-2"><b>${e.deg}</b><br>${e.inst}</li>`;
-      });
-    }
-
-    function generateCV(){
-      document.getElementById('cv-name-preview').innerText = document.getElementById('name').value || "Your Name";
-      document.getElementById('cv-title-preview').innerText = document.getElementById('title').value || "Profession";
-      document.getElementById('cv-contact-preview').innerText = `${document.getElementById('emailInput').value} | ${document.getElementById('phone').value}`;
-      document.getElementById('cv-address-preview').innerText = document.getElementById('address').value;
-      document.getElementById('cv-summary-preview').innerText = document.getElementById('summary').value;
-      document.getElementById('cv-experience-preview').innerText = document.getElementById('experience').value;
-      document.getElementById('cv-skills-preview').innerText = document.getElementById('skills').value;
-    }
-
-    function changeTemplate(){
-      document.getElementById('cv-preview').className = 'cv-card ' + document.getElementById('template').value;
-    }
-
-    function saveToLocal(){
-      const data = {
-        name: document.getElementById('name').value,
-        title: document.getElementById('title').value,
-        emailInput: document.getElementById('emailInput').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        summary: document.getElementById('summary').value,
-        skills: document.getElementById('skills').value,
-        experience: document.getElementById('experience').value,
-        template: document.getElementById('template').value,
-        education: educations,
-        photo: profileImageData
-      };
-      localStorage.setItem('cv_pro_data', JSON.stringify(data));
-      alert("CV Saved Successfully!");
-    }
-
-    function clearData() { if(confirm("Clear everything?")) { localStorage.removeItem('cv_pro_data'); location.reload(); } }
-
-    // --- PDF Download with Image Support ---
-    async function downloadPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        let y = 20;
-
-        // 1. Image & Header
-        if (profileImageData) {
-            try {
-                // Add Image (x, y, width, height)
-                doc.addImage(profileImageData, 'JPEG', 15, y, 30, 30);
-                doc.setFontSize(22);
-                doc.text(document.getElementById('name').value.toUpperCase() || "NAME", 50, y + 12);
-                doc.setFontSize(12);
-                doc.text(document.getElementById('title').value || "PROFESSION", 50, y + 20);
-                y += 40;
-            } catch (err) {
-                console.log("Image Error", err);
-                y += 10;
-            }
-        } else {
-            doc.setFontSize(22);
-            doc.text(document.getElementById('name').value.toUpperCase() || "NAME", 15, y);
-            y += 15;
-        }
-
-        // 2. Contact Info
-        doc.setFontSize(10);
-        const contact = `${document.getElementById('emailInput').value} | ${document.getElementById('phone').value} | ${document.getElementById('address').value}`;
-        doc.text(contact, 15, y);
-        y += 5;
-        doc.line(15, y, 195, y);
-        y += 10;
-
-        // 3. Sections Generator
-        const addPdfSection = (title, content) => {
-            if (!content) return;
-            doc.setFontSize(14);
-            doc.setTextColor(0, 102, 204);
-            doc.text(title, 15, y);
-            y += 7;
-            doc.setFontSize(10);
-            doc.setTextColor(50);
-            const lines = doc.splitTextToSize(content, 175);
-            doc.text(lines, 15, y);
-            y += (lines.length * 6) + 7;
-        };
-
-        addPdfSection("PERSONAL SUMMARY", document.getElementById('summary').value);
-
-        // 4. Education in PDF
-        if(educations.length > 0) {
-            doc.setFontSize(14);
-            doc.setTextColor(0, 102, 204);
-            doc.text("EDUCATION", 15, y);
-            y += 7;
-            doc.setFontSize(10);
-            doc.setTextColor(50);
-            educations.forEach(edu => {
-                doc.text(`• ${edu.deg} - ${edu.inst}`, 15, y);
-                y += 6;
-            });
-            y += 5;
-        }
-
-        addPdfSection("WORK EXPERIENCE", document.getElementById('experience').value);
-        addPdfSection("SKILLS", document.getElementById('skills').value);
-
-        doc.save("My_CV.pdf");
-    }
-  </script>
 </body>
 </html>
