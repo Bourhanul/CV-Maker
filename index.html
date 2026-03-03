@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   
   <style>
+    * {
+      box-sizing: border-box;
+    }
+    
     :root {
       --primary-color: #2563eb;
       --secondary-color: #3b82f6;
@@ -22,6 +26,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
       padding: 20px;
+      margin: 0;
     }
     
     .main-container {
@@ -50,8 +55,6 @@
       border-radius: 20px;
       padding: 25px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
     }
     
     .preview-card {
@@ -137,6 +140,7 @@
       object-fit: cover;
       border: 4px solid var(--primary-color);
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      display: none;
     }
     
     .template-option {
@@ -183,49 +187,34 @@
       animation: slideIn 0.3s ease;
     }
     
-    .education-item {
+    .education-item, .experience-item {
       background: #f8fafc;
       border-radius: 10px;
       padding: 15px;
       margin-bottom: 12px;
-      border-left: 4px solid var(--primary-color);
       animation: slideIn 0.3s ease;
       transition: transform 0.2s;
     }
     
-    .education-item:hover {
-      transform: translateX(-5px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .education-item .badge {
-      font-size: 0.75rem;
-      padding: 5px 8px;
+    .education-item {
+      border-left: 4px solid var(--primary-color);
     }
     
     .experience-item {
-      background: #f8fafc;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 12px;
       border-left: 4px solid #f59e0b;
-      animation: slideIn 0.3s ease;
-      transition: transform 0.2s;
     }
     
-    .experience-item:hover {
+    .education-item:hover, .experience-item:hover {
       transform: translateX(-5px);
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     
-    .experience-item .badge {
+    .badge {
       font-size: 0.75rem;
       padding: 5px 8px;
-      background: #f59e0b;
-      color: white;
     }
     
-    .experience-item .text-primary {
+    .text-primary {
       color: #2563eb !important;
     }
     
@@ -268,6 +257,7 @@
       right: 20px;
       z-index: 9999;
       animation: slideInRight 0.3s ease;
+      display: none;
     }
     
     @keyframes slideInRight {
@@ -301,7 +291,7 @@
     </h1>
     
     <!-- Toast Notification -->
-    <div id="toast" class="toast-notification" style="display: none;">
+    <div id="toast" class="toast-notification">
       <div class="bg-white rounded-3 shadow-lg p-3 border-start border-success border-4">
         <div class="d-flex align-items-center">
           <i class="bi bi-check-circle-fill text-success me-2 fs-4"></i>
@@ -384,14 +374,14 @@
             </div>
           </div>
           
-          <!-- Education with CGPA and Year -->
+          <!-- Education Section -->
           <div class="section-title">
             <i class="bi bi-mortarboard"></i> Academic Qualification
           </div>
           
           <div class="row g-2 mb-3">
             <div class="col-md-4">
-              <input class="form-control" id="degree" placeholder="Degree (e.g. BSc in CSE)">
+              <input class="form-control" id="degree" placeholder="Degree">
             </div>
             <div class="col-md-4">
               <input class="form-control" id="institution" placeholder="Institution">
@@ -414,7 +404,7 @@
           
           <div id="educationContainer" class="mb-4"></div>
           
-          <!-- Skills -->
+          <!-- Skills Section -->
           <div class="section-title">
             <i class="bi bi-stars"></i> Skills
           </div>
@@ -426,12 +416,11 @@
           </div>
           <div id="skillsContainer" class="mb-4"></div>
           
-          <!-- Work Experience (Multiple Entries) -->
+          <!-- Work Experience Section -->
           <div class="section-title">
             <i class="bi bi-briefcase"></i> Work Experience
           </div>
           
-          <!-- Add Experience Form -->
           <div class="row g-2 mb-2">
             <div class="col-md-4">
               <input class="form-control" id="expCompany" placeholder="Company Name">
@@ -453,7 +442,7 @@
           </div>
           
           <div class="mb-2">
-            <textarea class="form-control" id="expDescription" rows="2" placeholder="Describe your responsibilities and achievements... (Use bullet points)"></textarea>
+            <textarea class="form-control" id="expDescription" rows="2" placeholder="Describe your responsibilities..."></textarea>
           </div>
           
           <div id="experienceContainer" class="mb-4"></div>
@@ -481,7 +470,7 @@
         <div class="preview-card">
           <div class="p-4" id="cv-preview">
             <div class="d-flex align-items-center gap-4 mb-4">
-              <img id="cv-photo-preview" src="" style="display: none;">
+              <img id="cv-photo-preview" src="">
               <div>
                 <h2 id="cv-name-preview" class="fw-bold mb-1">Your Name</h2>
                 <h5 id="cv-title-preview" class="text-primary mb-2">Profession</h5>
@@ -523,7 +512,6 @@
         try {
           const data = JSON.parse(savedData);
           
-          // Restore form fields
           document.getElementById('name').value = data.name || '';
           document.getElementById('title').value = data.title || '';
           document.getElementById('emailInput').value = data.email || '';
@@ -531,25 +519,21 @@
           document.getElementById('address').value = data.address || '';
           document.getElementById('summary').value = data.summary || '';
           
-          // Restore arrays
           experiences = data.experiences || [];
           educations = data.educations || [];
           skills = data.skills || [];
           profileImageData = data.photo || '';
           
-          // Restore photo
           if(profileImageData) {
             const img = document.getElementById('cv-photo-preview');
             img.src = profileImageData;
             img.style.display = 'block';
           }
           
-          // Restore template
           if(data.template) {
             selectTemplate(data.template);
           }
           
-          // Render all
           renderExperience();
           renderEducation();
           renderSkills();
@@ -612,23 +596,13 @@
     function validateEmail(input) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const isValid = emailRegex.test(input.value) || input.value === '';
-      
-      if(!isValid) {
-        input.classList.add('is-invalid');
-      } else {
-        input.classList.remove('is-invalid');
-      }
+      input.classList.toggle('is-invalid', !isValid && input.value !== '');
     }
     
     function validatePhone(input) {
       const phoneRegex = /^[\d\s\+\-\(\)]{10,}$/;
       const isValid = phoneRegex.test(input.value) || input.value === '';
-      
-      if(!isValid) {
-        input.classList.add('is-invalid');
-      } else {
-        input.classList.remove('is-invalid');
-      }
+      input.classList.toggle('is-invalid', !isValid && input.value !== '');
     }
     
     // Template selection
@@ -648,7 +622,7 @@
       }
     }
     
-    // Add education with CGPA and Year
+    // Education functions
     function addEducation() {
       const degree = document.getElementById('degree').value;
       const institution = document.getElementById('institution').value;
@@ -665,20 +639,17 @@
         
         renderEducation();
         
-        // Clear form
         document.getElementById('degree').value = '';
         document.getElementById('institution').value = '';
         document.getElementById('passingYear').value = '';
         document.getElementById('cgpa').value = '';
         
-        generateCV();
         showToast('Education added successfully!');
       } else {
-        alert('Please fill at least Degree, Institution and Year!');
+        alert('Please fill Degree, Institution and Year!');
       }
     }
     
-    // Render education list with CGPA and Year
     function renderEducation() {
       const container = document.getElementById('educationContainer');
       const previewContainer = document.getElementById('cv-edu-preview');
@@ -687,28 +658,24 @@
       previewContainer.innerHTML = '';
       
       educations.forEach((edu, index) => {
-        // Form education item
         container.innerHTML += `
           <div class="education-item">
             <div class="d-flex justify-content-between align-items-start">
               <div class="flex-grow-1">
                 <div class="d-flex justify-content-between">
-                  <strong class="fs-6">${edu.degree}</strong>
+                  <strong>${edu.degree}</strong>
                   <span class="badge bg-primary">${edu.passingYear}</span>
                 </div>
                 <p class="mb-1 text-muted">${edu.institution}</p>
-                <div class="d-flex justify-content-between">
-                  <small class="text-success"><i class="bi bi-star-fill"></i> CGPA: ${edu.cgpa}</small>
-                </div>
+                <small class="text-success">CGPA: ${edu.cgpa}</small>
               </div>
-              <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeEducation(${index})">
+              <button class="btn btn-sm btn-outline-danger" onclick="removeEducation(${index})">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
           </div>
         `;
         
-        // Preview education item
         previewContainer.innerHTML += `
           <div class="mb-3">
             <div class="d-flex justify-content-between">
@@ -722,15 +689,13 @@
       });
     }
     
-    // Remove education
     function removeEducation(index) {
       educations.splice(index, 1);
       renderEducation();
-      generateCV();
       showToast('Education removed successfully!');
     }
     
-    // Add skill
+    // Skills functions
     function addSkill() {
       const skillInput = document.getElementById('skillInput');
       const skill = skillInput.value.trim();
@@ -739,7 +704,6 @@
         skills.push(skill);
         renderSkills();
         skillInput.value = '';
-        generateCV();
         showToast('Skill added successfully!');
       } else if(skills.includes(skill)) {
         alert('This skill is already added!');
@@ -748,7 +712,6 @@
       }
     }
     
-    // Render skills
     function renderSkills() {
       const container = document.getElementById('skillsContainer');
       const previewContainer = document.getElementById('cv-skills-preview');
@@ -760,7 +723,7 @@
         container.innerHTML += `
           <span class="skill-badge">
             ${skill}
-            <i class="bi bi-x-circle-fill ms-2" onclick="removeSkill(${index})" style="cursor:pointer; font-size:0.8rem;"></i>
+            <i class="bi bi-x-circle-fill ms-2" onclick="removeSkill(${index})" style="cursor:pointer;"></i>
           </span>
         `;
         
@@ -768,15 +731,13 @@
       });
     }
     
-    // Remove skill
     function removeSkill(index) {
       skills.splice(index, 1);
       renderSkills();
-      generateCV();
       showToast('Skill removed successfully!');
     }
     
-    // Add work experience
+    // Experience functions
     function addExperience() {
       const company = document.getElementById('expCompany').value;
       const position = document.getElementById('expPosition').value;
@@ -795,21 +756,18 @@
         
         renderExperience();
         
-        // Clear form
         document.getElementById('expCompany').value = '';
         document.getElementById('expPosition').value = '';
         document.getElementById('expStartDate').value = '';
         document.getElementById('expEndDate').value = '';
         document.getElementById('expDescription').value = '';
         
-        generateCV();
         showToast('Experience added successfully!');
       } else {
-        alert('Please fill at least Company, Position, Start Date and Description!');
+        alert('Please fill Company, Position, Start Date and Description!');
       }
     }
     
-    // Render experience list
     function renderExperience() {
       const container = document.getElementById('experienceContainer');
       const previewContainer = document.getElementById('cv-experience-preview');
@@ -823,13 +781,13 @@
             <div class="d-flex justify-content-between align-items-start">
               <div class="flex-grow-1">
                 <div class="d-flex justify-content-between">
-                  <strong class="fs-6">${exp.position}</strong>
-                  <span class="badge bg-info">${exp.startDate} - ${exp.endDate}</span>
+                  <strong>${exp.position}</strong>
+                  <span class="badge bg-warning text-dark">${exp.startDate} - ${exp.endDate}</span>
                 </div>
                 <p class="mb-1 text-primary fw-semibold">${exp.company}</p>
                 <p class="mb-1 small">${exp.description}</p>
               </div>
-              <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeExperience(${index})">
+              <button class="btn btn-sm btn-outline-danger" onclick="removeExperience(${index})">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
@@ -849,11 +807,9 @@
       });
     }
     
-    // Remove experience
     function removeExperience(index) {
       experiences.splice(index, 1);
       renderExperience();
-      generateCV();
       showToast('Experience removed successfully!');
     }
     
@@ -909,8 +865,7 @@
         summary: document.getElementById('summary').value,
         experiences: experiences,
         educations: educations,
-        skills: skills,
-        template: document.getElementById('cv-preview').className.includes('template-modern') ? 'modern' : 'classic'
+        skills: skills
       };
       
       const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
@@ -924,62 +879,29 @@
       showToast('JSON download started!');
     }
     
-    // Download PDF with image support
+    // Download PDF
     async function downloadPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       let y = 20;
       
-      // Check if profile image exists
-      if (profileImageData) {
-        try {
-          doc.addImage(profileImageData, 'JPEG', 15, y - 5, 30, 30);
-          
-          doc.setFontSize(20);
-          doc.setTextColor(37, 99, 235);
-          doc.setFont("helvetica", "bold");
-          doc.text(document.getElementById('name').value.toUpperCase() || "YOUR NAME", 50, y + 5);
-          
-          doc.setFontSize(12);
-          doc.setTextColor(100, 100, 100);
-          doc.setFont("helvetica", "normal");
-          doc.text(document.getElementById('title').value || "PROFESSIONAL TITLE", 50, y + 15);
-          
-          y += 35;
-        } catch (err) {
-          console.log("Image error:", err);
-          doc.setFontSize(24);
-          doc.setTextColor(37, 99, 235);
-          doc.setFont("helvetica", "bold");
-          doc.text(document.getElementById('name').value.toUpperCase() || "YOUR NAME", 15, y);
-          y += 10;
-          
-          doc.setFontSize(14);
-          doc.setTextColor(100, 100, 100);
-          doc.setFont("helvetica", "normal");
-          doc.text(document.getElementById('title').value || "PROFESSIONAL TITLE", 15, y);
-          y += 15;
-        }
-      } else {
-        doc.setFontSize(24);
-        doc.setTextColor(37, 99, 235);
-        doc.setFont("helvetica", "bold");
-        doc.text(document.getElementById('name').value.toUpperCase() || "YOUR NAME", 15, y);
-        y += 10;
-        
-        doc.setFontSize(14);
-        doc.setTextColor(100, 100, 100);
-        doc.setFont("helvetica", "normal");
-        doc.text(document.getElementById('title').value || "PROFESSIONAL TITLE", 15, y);
-        y += 15;
-      }
+      // Name
+      doc.setFontSize(24);
+      doc.setTextColor(37, 99, 235);
+      doc.setFont("helvetica", "bold");
+      doc.text(document.getElementById('name').value.toUpperCase() || "YOUR NAME", 15, y);
+      y += 10;
+      
+      // Title
+      doc.setFontSize(14);
+      doc.setTextColor(100, 100, 100);
+      doc.setFont("helvetica", "normal");
+      doc.text(document.getElementById('title').value || "PROFESSIONAL TITLE", 15, y);
+      y += 10;
       
       // Contact info
       doc.setFontSize(10);
-      doc.setTextColor(80, 80, 80);
-      const email = document.getElementById('emailInput').value || 'email@example.com';
-      const phone = document.getElementById('phone').value || 'phone';
-      const contact = `${email} | ${phone}`;
+      const contact = `${document.getElementById('emailInput').value || 'email@example.com'} | ${document.getElementById('phone').value || 'phone'}`;
       doc.text(contact, 15, y);
       y += 5;
       
@@ -988,32 +910,103 @@
         y += 5;
       }
       
-      // Line separator
-      doc.setDrawColor(200, 200, 200);
       doc.line(15, y, 195, y);
       y += 10;
       
-      // Helper function for sections
-      function addSection(title, content) {
-        if (!content) return y;
-        
+      // Summary
+      if (document.getElementById('summary').value) {
         doc.setFontSize(14);
         doc.setTextColor(37, 99, 235);
         doc.setFont("helvetica", "bold");
-        doc.text(title, 15, y);
+        doc.text("PROFESSIONAL SUMMARY", 15, y);
         y += 7;
         
         doc.setFontSize(11);
         doc.setTextColor(60, 60, 60);
         doc.setFont("helvetica", "normal");
         
-        const lines = doc.splitTextToSize(content.toString(), 175);
-        doc.text(lines, 15, y);
-        y += (lines.length * 6) + 5;
-        
-        return y;
+        const summaryLines = doc.splitTextToSize(document.getElementById('summary').value, 175);
+        doc.text(summaryLines, 15, y);
+        y += (summaryLines.length * 6) + 5;
       }
       
-      // Professional Summary
-      if (document.getElementById('summary').value) {
-        y = add
+      // Education
+      if (educations.length > 0) {
+        doc.setFontSize(14);
+        doc.setTextColor(37, 99, 235);
+        doc.setFont("helvetica", "bold");
+        doc.text("EDUCATION", 15, y);
+        y += 7;
+        
+        doc.setFontSize(11);
+        doc.setTextColor(60, 60, 60);
+        
+        educations.forEach(edu => {
+          doc.text(`• ${edu.degree} (${edu.passingYear})`, 15, y);
+          y += 5;
+          doc.text(`  ${edu.institution}`, 15, y);
+          y += 5;
+          doc.text(`  CGPA: ${edu.cgpa}`, 15, y);
+          y += 6;
+        });
+        y += 2;
+      }
+      
+      // Skills
+      if (skills.length > 0) {
+        doc.setFontSize(14);
+        doc.setTextColor(37, 99, 235);
+        doc.setFont("helvetica", "bold");
+        doc.text("SKILLS", 15, y);
+        y += 7;
+        
+        doc.setFontSize(11);
+        doc.setTextColor(60, 60, 60);
+        
+        const skillsText = skills.join('  •  ');
+        const skillsLines = doc.splitTextToSize(skillsText, 175);
+        doc.text(skillsLines, 15, y);
+        y += (skillsLines.length * 6) + 5;
+      }
+      
+      // Experience
+      if (experiences.length > 0) {
+        doc.setFontSize(14);
+        doc.setTextColor(37, 99, 235);
+        doc.setFont("helvetica", "bold");
+        doc.text("WORK EXPERIENCE", 15, y);
+        y += 7;
+        
+        doc.setFontSize(11);
+        doc.setTextColor(60, 60, 60);
+        
+        experiences.forEach(exp => {
+          doc.text(`• ${exp.position}`, 15, y);
+          y += 5;
+          doc.text(`  ${exp.company} | ${exp.startDate} - ${exp.endDate}`, 15, y);
+          y += 5;
+          
+          const descLines = doc.splitTextToSize(`  ${exp.description}`, 170);
+          doc.text(descLines, 15, y);
+          y += (descLines.length * 5) + 5;
+        });
+      }
+      
+      doc.save(`${document.getElementById('name').value || 'My'}_CV.pdf`);
+      showToast('PDF downloaded successfully!');
+    }
+    
+    // Show toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      toastMessage.innerText = message;
+      toast.style.display = 'block';
+      
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
