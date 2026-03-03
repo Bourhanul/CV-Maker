@@ -3,262 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CV Maker Pro V2</title>
+<title>Blue & Gray CV Maker</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-body { background:#f4f6f8; font-family: 'Segoe UI', sans-serif; }
-.cv-card { background:#fff; padding:25px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); }
-.preview-box { position: sticky; top:20px; }
-.profile-img { width:100px; height:100px; border-radius:10px; object-fit:cover; display:none; }
-.template-modern { background:#0f172a; color:#fff; }
-.template-modern h3 { border-bottom:1px solid #38bdf8; }
-.badge-skill { background:#0d6efd; margin:3px; }
-h3 { border-bottom:1px solid #ddd; padding-bottom:5px; margin-top:15px; font-size:1rem; }
+body{
+background:#f2f4f8;
+font-family: Arial, sans-serif;
+}
+
+.form-section{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.cv-wrapper{
+width:210mm;
+min-height:297mm;
+background:white;
+display:flex;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+margin:auto;
+}
+
+.sidebar{
+width:35%;
+background:#2f3e46;
+color:white;
+padding:30px;
+}
+
+.sidebar h5{
+border-bottom:1px solid #aaa;
+padding-bottom:5px;
+margin-top:20px;
+font-size:14px;
+text-transform:uppercase;
+}
+
+.main{
+width:65%;
+padding:40px;
+}
+
+.name{
+font-size:28px;
+font-weight:bold;
+}
+
+.title{
+color:#3b82f6;
+font-weight:600;
+margin-bottom:20px;
+}
+
+.section-title{
+font-weight:bold;
+border-bottom:2px solid #3b82f6;
+padding-bottom:5px;
+margin-top:20px;
+}
+
+.skill{
+font-size:13px;
+margin-bottom:5px;
+}
+
+@media print {
+body * {
+visibility:hidden;
+}
+.cv-wrapper, .cv-wrapper * {
+visibility:visible;
+}
+.cv-wrapper{
+position:absolute;
+left:0;
+top:0;
+}
+}
 </style>
 </head>
+
 <body>
 
 <div class="container py-4">
 <div class="row g-4">
 
 <!-- FORM -->
-<div class="col-lg-6">
-<div class="cv-card">
+<div class="col-lg-4">
+<div class="form-section">
 
-<h4>Personal Info</h4>
-<input class="form-control my-2" id="name" placeholder="Full Name">
-<input class="form-control my-2" id="title" placeholder="Title">
-<input class="form-control my-2" id="email" placeholder="Email">
-<input class="form-control my-2" id="phone" placeholder="Phone">
-<textarea class="form-control my-2" id="summary" placeholder="Summary"></textarea>
+<h5>Personal Info</h5>
+<input id="name" class="form-control mb-2" placeholder="Full Name">
+<input id="title" class="form-control mb-2" placeholder="Job Title">
+<input id="phone" class="form-control mb-2" placeholder="Phone">
+<input id="email" class="form-control mb-2" placeholder="Email">
+<input id="address" class="form-control mb-3" placeholder="Address">
 
-<label>Photo</label>
-<input type="file" class="form-control mb-3" onchange="loadPhoto(event)">
-
-<select id="template" class="form-select mb-3">
-<option value="classic">Classic</option>
-<option value="modern">Modern</option>
-</select>
-
-<h5>Education</h5>
-<div class="input-group mb-2">
-<input id="eduDegree" class="form-control" placeholder="Degree">
-<input id="eduInst" class="form-control" placeholder="Institution">
-<button class="btn btn-primary" onclick="addEducation()">Add</button>
-</div>
-
-<h5>Experience</h5>
-<div class="input-group mb-2">
-<input id="expRole" class="form-control" placeholder="Role">
-<input id="expCompany" class="form-control" placeholder="Company">
-<button class="btn btn-primary" onclick="addExperience()">Add</button>
-</div>
+<h5>Profile</h5>
+<textarea id="profile" class="form-control mb-3"></textarea>
 
 <h5>Skills (comma separated)</h5>
-<input id="skills" class="form-control mb-3" placeholder="HTML, CSS, JS">
+<input id="skills" class="form-control mb-3">
 
-<div class="d-flex gap-2">
-<button class="btn btn-success" onclick="downloadPDF()">Download PDF</button>
-<button class="btn btn-danger" onclick="resetAll()">Reset</button>
-</div>
+<h5>Languages (comma separated)</h5>
+<input id="languages" class="form-control mb-3">
+
+<h5>Education</h5>
+<textarea id="education" class="form-control mb-3" placeholder="Degree - University - Year"></textarea>
+
+<h5>Work Experience</h5>
+<textarea id="experience" class="form-control mb-3" placeholder="Role - Company - Year"></textarea>
+
+<button class="btn btn-primary w-100 mb-2" onclick="downloadPDF()">Download PDF</button>
 
 </div>
 </div>
 
 <!-- PREVIEW -->
-<div class="col-lg-6">
-<div id="preview" class="cv-card preview-box">
+<div class="col-lg-8">
+<div id="cv" class="cv-wrapper">
 
-<img id="previewPhoto" class="profile-img">
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h5>Contact</h5>
+<p id="p-phone"></p>
+<p id="p-email"></p>
+<p id="p-address"></p>
 
-<h2 id="previewName">Your Name</h2>
-<p id="previewTitle"></p>
-<p id="previewContact"></p>
+<h5>Skills</h5>
+<div id="p-skills"></div>
 
-<h3>Summary</h3>
-<p id="previewSummary"></p>
+<h5>Languages</h5>
+<div id="p-languages"></div>
+</div>
 
-<h3>Education</h3>
-<ul id="previewEdu"></ul>
+<!-- MAIN -->
+<div class="main">
+<div class="name" id="p-name">Your Name</div>
+<div class="title" id="p-title">Your Title</div>
 
-<h3>Experience</h3>
-<ul id="previewExp"></ul>
+<div class="section-title">Profile</div>
+<p id="p-profile"></p>
 
-<h3>Skills</h3>
-<div id="previewSkills"></div>
+<div class="section-title">Work Experience</div>
+<p id="p-experience"></p>
+
+<div class="section-title">Education</div>
+<p id="p-education"></p>
+
+</div>
 
 </div>
 </div>
 
 </div>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
 
-// ================== DATA MODEL ==================
-let cvData = {
-personal:{name:"",title:"",email:"",phone:"",photo:""},
-summary:"",
-education:[],
-experience:[],
-skills:[],
-template:"classic"
-};
-
-// ================== LOAD FROM STORAGE ==================
-window.onload = function(){
-const saved = localStorage.getItem("cv_v2");
-if(saved){
-cvData = JSON.parse(saved);
-renderAll();
-}
-};
-
-// ================== AUTO SAVE ==================
-setInterval(()=> {
-localStorage.setItem("cv_v2", JSON.stringify(cvData));
-},2000);
-
-// ================== INPUT LISTENERS ==================
-document.querySelectorAll("input, textarea, select").forEach(el=>{
-el.addEventListener("input", updateData);
+document.querySelectorAll("input, textarea").forEach(el=>{
+el.addEventListener("input",updateCV);
 });
 
-function updateData(){
-cvData.personal.name = name.value;
-cvData.personal.title = title.value;
-cvData.personal.email = email.value;
-cvData.personal.phone = phone.value;
-cvData.summary = summary.value;
-cvData.skills = skills.value.split(",");
-cvData.template = template.value;
-renderAll();
-}
+function updateCV(){
 
-// ================== EDUCATION ==================
-function addEducation(){
-if(!eduDegree.value || !eduInst.value) return;
-cvData.education.push({deg:eduDegree.value, inst:eduInst.value});
-eduDegree.value=""; eduInst.value="";
-renderAll();
-}
+p-name.innerText=name.value;
+p-title.innerText=title.value;
+p-phone.innerText=phone.value;
+p-email.innerText=email.value;
+p-address.innerText=address.value;
+p-profile.innerText=profile.value;
+p-experience.innerText=experience.value;
+p-education.innerText=education.value;
 
-// ================== EXPERIENCE ==================
-function addExperience(){
-if(!expRole.value || !expCompany.value) return;
-cvData.experience.push({role:expRole.value, company:expCompany.value});
-expRole.value=""; expCompany.value="";
-renderAll();
-}
-
-// ================== PHOTO ==================
-function loadPhoto(e){
-const reader = new FileReader();
-reader.onload=()=>{
-cvData.personal.photo = reader.result;
-renderAll();
-};
-reader.readAsDataURL(e.target.files[0]);
-}
-
-// ================== RENDER ==================
-function renderAll(){
-
-previewName.innerText = cvData.personal.name || "Your Name";
-previewTitle.innerText = cvData.personal.title;
-previewContact.innerText = cvData.personal.email+" | "+cvData.personal.phone;
-previewSummary.innerText = cvData.summary;
-
-previewEdu.innerHTML="";
-cvData.education.forEach(e=>{
-previewEdu.innerHTML += `<li><b>${e.deg}</b> - ${e.inst}</li>`;
-});
-
-previewExp.innerHTML="";
-cvData.experience.forEach(e=>{
-previewExp.innerHTML += `<li><b>${e.role}</b> - ${e.company}</li>`;
-});
-
-previewSkills.innerHTML="";
-cvData.skills.forEach(s=>{
+p-skills.innerHTML="";
+skills.value.split(",").forEach(s=>{
 if(s.trim())
-previewSkills.innerHTML+=`<span class="badge badge-skill">${s}</span>`;
+p-skills.innerHTML+=`<div class="skill">• ${s}</div>`;
 });
 
-if(cvData.personal.photo){
-previewPhoto.src=cvData.personal.photo;
-previewPhoto.style.display="block";
-}
-
-preview.className="cv-card preview-box " +
-(cvData.template==="modern"?"template-modern":"");
+p-languages.innerHTML="";
+languages.value.split(",").forEach(l=>{
+if(l.trim())
+p-languages.innerHTML+=`<div class="skill">• ${l}</div>`;
+});
 
 }
 
-// ================== PDF ==================
 async function downloadPDF(){
-const {jsPDF} = window.jspdf;
-const doc = new jsPDF();
-let y=20;
 
-doc.setFontSize(20);
-doc.text(cvData.personal.name,15,y);
-y+=10;
+const element=document.getElementById("cv");
+const canvas=await html2canvas(element,{scale:2});
+const imgData=canvas.toDataURL("image/png");
 
-doc.setFontSize(12);
-doc.text(cvData.personal.title,15,y);
-y+=10;
+const {jsPDF}=window.jspdf;
+const pdf=new jsPDF("p","mm","a4");
 
-doc.text(cvData.personal.email+" | "+cvData.personal.phone,15,y);
-y+=10;
+const imgWidth=210;
+const imgHeight=canvas.height*imgWidth/canvas.width;
 
-const addSection=(title,content)=>{
-if(!content) return;
-doc.setFontSize(14);
-doc.text(title,15,y);
-y+=8;
-doc.setFontSize(10);
-const lines=doc.splitTextToSize(content,170);
-doc.text(lines,15,y);
-y+=lines.length*6+5;
-if(y>270){ doc.addPage(); y=20;}
-};
+pdf.addImage(imgData,"PNG",0,0,imgWidth,imgHeight);
+pdf.save("Professional_CV.pdf");
 
-addSection("SUMMARY",cvData.summary);
-
-if(cvData.education.length){
-doc.setFontSize(14); doc.text("EDUCATION",15,y); y+=8;
-cvData.education.forEach(e=>{
-doc.text("• "+e.deg+" - "+e.inst,15,y);
-y+=6;
-});
-y+=5;
-}
-
-if(cvData.experience.length){
-doc.setFontSize(14); doc.text("EXPERIENCE",15,y); y+=8;
-cvData.experience.forEach(e=>{
-doc.text("• "+e.role+" - "+e.company,15,y);
-y+=6;
-});
-y+=5;
-}
-
-addSection("SKILLS",cvData.skills.join(", "));
-
-doc.save("CV.pdf");
-}
-
-// ================== RESET ==================
-function resetAll(){
-localStorage.removeItem("cv_v2");
-location.reload();
 }
 
 </script>
+
 </body>
 </html>
