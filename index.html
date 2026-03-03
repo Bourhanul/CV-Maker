@@ -183,6 +183,26 @@
       animation: slideIn 0.3s ease;
     }
     
+    .education-item {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--primary-color);
+      animation: slideIn 0.3s ease;
+      transition: transform 0.2s;
+    }
+    
+    .education-item:hover {
+      transform: translateX(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .education-item .badge {
+      font-size: 0.75rem;
+      padding: 5px 8px;
+    }
+    
     @keyframes slideIn {
       from {
         transform: translateY(-10px);
@@ -192,15 +212,6 @@
         transform: translateY(0);
         opacity: 1;
       }
-    }
-    
-    .education-item {
-      background: #f8fafc;
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-left: 4px solid var(--primary-color);
-      animation: slideIn 0.3s ease;
     }
     
     .btn-group-custom {
@@ -347,23 +358,34 @@
             </div>
           </div>
           
-          <!-- Education -->
+          <!-- Education with CGPA and Year -->
           <div class="section-title">
             <i class="bi bi-mortarboard"></i> Academic Qualification
           </div>
-          <div class="row g-2 mb-2">
-            <div class="col-md-5">
-              <input class="form-control" id="degree" placeholder="Degree/Year">
+          
+          <div class="row g-2 mb-3">
+            <div class="col-md-4">
+              <input class="form-control" id="degree" placeholder="Degree (e.g. BSc in CSE)">
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
               <input class="form-control" id="institution" placeholder="Institution">
             </div>
             <div class="col-md-2">
+              <input class="form-control" id="passingYear" placeholder="Year">
+            </div>
+            <div class="col-md-2">
+              <input class="form-control" id="cgpa" placeholder="CGPA">
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-12">
               <button class="btn btn-primary-custom btn-custom w-100" onclick="addEducation()">
-                <i class="bi bi-plus"></i>
+                <i class="bi bi-plus-circle"></i> Add Education
               </button>
             </div>
           </div>
+          
           <div id="educationContainer" class="mb-4"></div>
           
           <!-- Skills -->
@@ -572,24 +594,37 @@
       }
     }
     
-    // Add education
+    // Add education with CGPA and Year
     function addEducation() {
       const degree = document.getElementById('degree').value;
       const institution = document.getElementById('institution').value;
+      const passingYear = document.getElementById('passingYear').value;
+      const cgpa = document.getElementById('cgpa').value;
       
-      if(degree && institution) {
-        educations.push({degree, institution});
+      if(degree && institution && passingYear) {
+        educations.push({
+          degree, 
+          institution, 
+          passingYear, 
+          cgpa: cgpa || 'N/A'
+        });
+        
         renderEducation();
+        
+        // Clear form
         document.getElementById('degree').value = '';
         document.getElementById('institution').value = '';
+        document.getElementById('passingYear').value = '';
+        document.getElementById('cgpa').value = '';
+        
         generateCV();
         showToast('Education added successfully!');
       } else {
-        alert('Please enter both degree and institution!');
+        alert('Please fill at least Degree, Institution and Year!');
       }
     }
     
-    // Render education list
+    // Render education list with CGPA and Year
     function renderEducation() {
       const container = document.getElementById('educationContainer');
       const previewContainer = document.getElementById('cv-edu-preview');
@@ -598,26 +633,36 @@
       previewContainer.innerHTML = '';
       
       educations.forEach((edu, index) => {
-        // Form education item
+        // Form education item with better design
         container.innerHTML += `
           <div class="education-item">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <strong>${edu.degree}</strong>
-                <p class="mb-0 text-muted">${edu.institution}</p>
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <div class="d-flex justify-content-between">
+                  <strong class="fs-6">${edu.degree}</strong>
+                  <span class="badge bg-primary">${edu.passingYear}</span>
+                </div>
+                <p class="mb-1 text-muted">${edu.institution}</p>
+                <div class="d-flex justify-content-between">
+                  <small class="text-success"><i class="bi bi-star-fill"></i> CGPA: ${edu.cgpa}</small>
+                </div>
               </div>
-              <button class="btn btn-sm btn-outline-danger" onclick="removeEducation(${index})">
+              <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeEducation(${index})">
                 <i class="bi bi-trash"></i>
               </button>
             </div>
           </div>
         `;
         
-        // Preview education item
+        // Preview education item (showing in CV preview)
         previewContainer.innerHTML += `
-          <div class="mb-2">
-            <strong>${edu.degree}</strong>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <strong>${edu.degree}</strong>
+              <span class="badge bg-secondary">${edu.passingYear}</span>
+            </div>
             <p class="mb-0">${edu.institution}</p>
+            <small class="text-muted">CGPA: ${edu.cgpa}</small>
           </div>
         `;
       });
@@ -770,7 +815,7 @@
           doc.setFont("helvetica", "normal");
           doc.text(document.getElementById('title').value || "PROFESSIONAL TITLE", 50, y + 15);
           
-          y += 35; // Increase y after image
+          y += 35;
         } catch (err) {
           console.log("Image error:", err);
           // Fallback if image fails
@@ -846,7 +891,7 @@
         y = addSection("PROFESSIONAL SUMMARY", document.getElementById('summary').value);
       }
       
-      // Education section
+      // Education section with CGPA and Year
       if (educations.length > 0) {
         doc.setFontSize(14);
         doc.setTextColor(37, 99, 235);
@@ -859,9 +904,11 @@
         doc.setFont("helvetica", "normal");
         
         educations.forEach(edu => {
-          doc.text(`• ${edu.degree}`, 15, y);
+          doc.text(`• ${edu.degree} (${edu.passingYear})`, 15, y);
           y += 5;
           doc.text(`  ${edu.institution}`, 15, y);
+          y += 5;
+          doc.text(`  CGPA: ${edu.cgpa}`, 15, y);
           y += 6;
         });
         y += 2;
