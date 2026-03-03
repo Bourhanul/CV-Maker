@@ -14,13 +14,6 @@
       box-sizing: border-box;
     }
     
-    :root {
-      --primary-color: #2563eb;
-      --secondary-color: #3b82f6;
-      --dark-bg: #0f172a;
-      --light-bg: #f8fafc;
-    }
-    
     body {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -39,12 +32,11 @@
       text-align: center;
       margin-bottom: 30px;
       font-weight: 700;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
     
     h1 i {
       background: white;
-      color: var(--primary-color);
+      color: #2563eb;
       padding: 10px;
       border-radius: 50%;
       margin-right: 10px;
@@ -67,27 +59,26 @@
     }
     
     .section-title {
-      color: var(--primary-color);
+      color: #2563eb;
       font-size: 1.2rem;
       font-weight: 600;
       margin: 20px 0 15px 0;
       padding-bottom: 8px;
-      border-bottom: 3px solid var(--primary-color);
+      border-bottom: 3px solid #2563eb;
     }
     
     .section-title i {
       margin-right: 8px;
     }
     
-    .form-control, .form-select {
+    .form-control {
       border-radius: 12px;
       border: 2px solid #e2e8f0;
       padding: 12px;
-      transition: all 0.3s;
     }
     
-    .form-control:focus, .form-select:focus {
-      border-color: var(--primary-color);
+    .form-control:focus {
+      border-color: #2563eb;
       box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
     }
     
@@ -95,7 +86,6 @@
       border-radius: 12px;
       padding: 12px 20px;
       font-weight: 600;
-      transition: all 0.3s;
       border: none;
     }
     
@@ -105,7 +95,7 @@
     }
     
     .btn-primary-custom {
-      background: var(--primary-color);
+      background: #2563eb;
       color: white;
     }
     
@@ -119,18 +109,17 @@
       padding: 20px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s;
       background: #f8fafc;
     }
     
     .profile-upload-area:hover {
-      border-color: var(--primary-color);
+      border-color: #2563eb;
       background: #e6f0ff;
     }
     
     .profile-upload-area i {
       font-size: 40px;
-      color: var(--primary-color);
+      color: #2563eb;
     }
     
     #cv-photo-preview {
@@ -138,8 +127,7 @@
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid var(--primary-color);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border: 4px solid #2563eb;
       display: none;
     }
     
@@ -147,27 +135,22 @@
       cursor: pointer;
       padding: 10px;
       border-radius: 10px;
-      transition: all 0.3s;
       text-align: center;
     }
     
-    .template-option:hover {
-      transform: scale(1.02);
-    }
-    
     .template-option.active {
-      border: 3px solid var(--primary-color);
+      border: 3px solid #2563eb;
       background: #e6f0ff;
     }
     
     .template-classic {
       background: white;
       color: #333;
-      border-top: 5px solid var(--primary-color);
+      border-top: 5px solid #2563eb;
     }
     
     .template-modern {
-      background: var(--dark-bg);
+      background: #0f172a;
       color: white;
     }
     
@@ -177,14 +160,13 @@
     }
     
     .skill-badge {
-      background: var(--primary-color);
+      background: #2563eb;
       color: white;
       padding: 8px 15px;
       border-radius: 25px;
       font-size: 0.9rem;
       display: inline-block;
       margin: 3px;
-      animation: slideIn 0.3s ease;
     }
     
     .education-item, .experience-item {
@@ -192,41 +174,19 @@
       border-radius: 10px;
       padding: 15px;
       margin-bottom: 12px;
-      animation: slideIn 0.3s ease;
-      transition: transform 0.2s;
     }
     
     .education-item {
-      border-left: 4px solid var(--primary-color);
+      border-left: 4px solid #2563eb;
     }
     
     .experience-item {
       border-left: 4px solid #f59e0b;
     }
     
-    .education-item:hover, .experience-item:hover {
-      transform: translateX(-5px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
     .badge {
       font-size: 0.75rem;
       padding: 5px 8px;
-    }
-    
-    .text-primary {
-      color: #2563eb !important;
-    }
-    
-    @keyframes slideIn {
-      from {
-        transform: translateY(-10px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
     }
     
     .btn-group-custom {
@@ -240,7 +200,6 @@
       display: none;
       font-size: 0.85rem;
       color: #dc2626;
-      margin-top: 5px;
     }
     
     .is-invalid {
@@ -256,29 +215,13 @@
       top: 20px;
       right: 20px;
       z-index: 9999;
-      animation: slideInRight 0.3s ease;
       display: none;
-    }
-    
-    @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
     }
     
     @media (max-width: 768px) {
       .preview-card {
         position: static;
         margin-top: 20px;
-      }
-      
-      .btn-group-custom {
-        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -290,7 +233,6 @@
       Professional CV Maker Pro
     </h1>
     
-    <!-- Toast Notification -->
     <div id="toast" class="toast-notification">
       <div class="bg-white rounded-3 shadow-lg p-3 border-start border-success border-4">
         <div class="d-flex align-items-center">
@@ -306,60 +248,59 @@
         <div class="form-card">
           <h2 class="h4 mb-4"><i class="bi bi-pencil-square"></i> Personal Details</h2>
           
-          <!-- Profile Photo Upload -->
+          <!-- Photo Upload -->
           <div class="profile-upload-area mb-4" onclick="document.getElementById('photoInput').click()">
             <i class="bi bi-cloud-upload"></i>
             <p class="mb-0">Upload Profile Photo</p>
-            <small class="text-muted">Click or drag & drop</small>
+            <small class="text-muted">Click to upload</small>
             <input type="file" id="photoInput" accept="image/*" onchange="loadPhoto(event)" hidden>
           </div>
           
-          <!-- Personal Details Row -->
+          <!-- Personal Info -->
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label class="fw-bold mb-1"><i class="bi bi-person"></i> Full Name</label>
+              <label class="fw-bold mb-1">Full Name</label>
               <input type="text" class="form-control" id="name" placeholder="Your full name" oninput="generateCV()">
             </div>
             <div class="col-md-6 mb-3">
-              <label class="fw-bold mb-1"><i class="bi bi-briefcase"></i> Profession</label>
-              <input type="text" class="form-control" id="title" placeholder="e.g. Web Developer" oninput="generateCV()">
+              <label class="fw-bold mb-1">Profession</label>
+              <input type="text" class="form-control" id="title" placeholder="e.g. Network Engineer" oninput="generateCV()">
             </div>
           </div>
           
-          <!-- Contact Info -->
+          <!-- Contact -->
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label class="fw-bold mb-1"><i class="bi bi-envelope"></i> Email</label>
-              <input type="email" class="form-control" id="emailInput" placeholder="example@email.com" oninput="validateEmail(this); generateCV()">
-              <div class="invalid-feedback">Please enter a valid email</div>
+              <label class="fw-bold mb-1">Email</label>
+              <input type="email" class="form-control" id="emailInput" placeholder="email@example.com" oninput="validateEmail(this); generateCV()">
+              <div class="invalid-feedback">Valid email required</div>
             </div>
             <div class="col-md-6 mb-3">
-              <label class="fw-bold mb-1"><i class="bi bi-telephone"></i> Phone</label>
-              <input type="tel" class="form-control" id="phone" placeholder="+1234567890" oninput="validatePhone(this); generateCV()">
-              <div class="invalid-feedback">Please enter a valid phone number</div>
+              <label class="fw-bold mb-1">Phone</label>
+              <input type="tel" class="form-control" id="phone" placeholder="01722652502" oninput="validatePhone(this); generateCV()">
+              <div class="invalid-feedback">Valid phone required</div>
             </div>
           </div>
           
           <div class="mb-3">
-            <label class="fw-bold mb-1"><i class="bi bi-geo-alt"></i> Address</label>
+            <label class="fw-bold mb-1">Address</label>
             <input type="text" class="form-control" id="address" placeholder="City, Country" oninput="generateCV()">
           </div>
           
-          <!-- Professional Summary -->
+          <!-- Summary -->
           <div class="section-title">
             <i class="bi bi-file-text"></i> Professional Summary
           </div>
-          <textarea class="form-control mb-4" id="summary" rows="3" placeholder="Brief summary about yourself..." oninput="generateCV()"></textarea>
+          <textarea class="form-control mb-4" id="summary" rows="3" placeholder="Brief summary..." oninput="generateCV()"></textarea>
           
-          <!-- Template Selection -->
+          <!-- Template -->
           <div class="section-title">
-            <i class="bi bi-palette"></i> Template Selection
+            <i class="bi bi-palette"></i> Template
           </div>
           <div class="row mb-4">
             <div class="col-6">
               <div class="template-option active" id="templateClassic" onclick="selectTemplate('classic')">
                 <div class="bg-light p-3 rounded-3">
-                  <i class="bi bi-sun fs-4"></i>
                   <h6>Classic (Light)</h6>
                 </div>
               </div>
@@ -367,16 +308,15 @@
             <div class="col-6">
               <div class="template-option" id="templateModern" onclick="selectTemplate('modern')">
                 <div class="bg-dark text-white p-3 rounded-3">
-                  <i class="bi bi-moon fs-4"></i>
                   <h6>Modern (Dark)</h6>
                 </div>
               </div>
             </div>
           </div>
           
-          <!-- Education Section -->
+          <!-- Education -->
           <div class="section-title">
-            <i class="bi bi-mortarboard"></i> Academic Qualification
+            <i class="bi bi-mortarboard"></i> Education
           </div>
           
           <div class="row g-2 mb-3">
@@ -394,78 +334,60 @@
             </div>
           </div>
           
-          <div class="row mb-3">
-            <div class="col-12">
-              <button class="btn btn-primary-custom btn-custom w-100" onclick="addEducation()">
-                <i class="bi bi-plus-circle"></i> Add Education
-              </button>
-            </div>
-          </div>
+          <button class="btn btn-primary-custom btn-custom w-100 mb-3" onclick="addEducation()">
+            <i class="bi bi-plus-circle"></i> Add Education
+          </button>
           
           <div id="educationContainer" class="mb-4"></div>
           
-          <!-- Skills Section -->
+          <!-- Skills -->
           <div class="section-title">
             <i class="bi bi-stars"></i> Skills
           </div>
           <div class="input-group mb-3">
-            <input class="form-control" id="skillInput" placeholder="e.g. JavaScript, React, PHP">
-            <button class="btn btn-primary-custom" onclick="addSkill()">
-              <i class="bi bi-plus-circle"></i> Add
-            </button>
+            <input class="form-control" id="skillInput" placeholder="e.g. Networking, JavaScript">
+            <button class="btn btn-primary-custom" onclick="addSkill()">Add</button>
           </div>
           <div id="skillsContainer" class="mb-4"></div>
           
-          <!-- Work Experience Section -->
+          <!-- Experience -->
           <div class="section-title">
             <i class="bi bi-briefcase"></i> Work Experience
           </div>
           
           <div class="row g-2 mb-2">
             <div class="col-md-4">
-              <input class="form-control" id="expCompany" placeholder="Company Name">
+              <input class="form-control" id="expCompany" placeholder="Company">
             </div>
             <div class="col-md-3">
               <input class="form-control" id="expPosition" placeholder="Position">
             </div>
             <div class="col-md-2">
-              <input class="form-control" id="expStartDate" placeholder="Start Date">
+              <input class="form-control" id="expStartDate" placeholder="Start">
             </div>
             <div class="col-md-2">
-              <input class="form-control" id="expEndDate" placeholder="End Date">
+              <input class="form-control" id="expEndDate" placeholder="End">
             </div>
             <div class="col-md-1">
-              <button class="btn btn-primary-custom btn-custom w-100" onclick="addExperience()">
-                <i class="bi bi-plus"></i>
-              </button>
+              <button class="btn btn-primary-custom btn-custom w-100" onclick="addExperience()">+</button>
             </div>
           </div>
           
-          <div class="mb-2">
-            <textarea class="form-control" id="expDescription" rows="2" placeholder="Describe your responsibilities..."></textarea>
-          </div>
+          <textarea class="form-control mb-2" id="expDescription" rows="2" placeholder="Description..."></textarea>
           
           <div id="experienceContainer" class="mb-4"></div>
           
-          <!-- Action Buttons -->
+          <!-- Buttons -->
           <div class="btn-group-custom">
-            <button class="btn btn-success btn-custom" onclick="saveToLocal()">
-              <i class="bi bi-save"></i> Save
-            </button>
-            <button class="btn btn-warning btn-custom" onclick="downloadPDF()">
-              <i class="bi bi-file-pdf"></i> PDF
-            </button>
-            <button class="btn btn-info btn-custom" onclick="exportAsJSON()">
-              <i class="bi bi-download"></i> JSON
-            </button>
-            <button class="btn btn-danger btn-custom" onclick="clearData()">
-              <i class="bi bi-arrow-counterclockwise"></i> Reset
-            </button>
+            <button class="btn btn-success btn-custom" onclick="saveToLocal()">Save</button>
+            <button class="btn btn-warning btn-custom" onclick="downloadPDF()">PDF</button>
+            <button class="btn btn-info btn-custom" onclick="exportAsJSON()">JSON</button>
+            <button class="btn btn-danger btn-custom" onclick="clearData()">Reset</button>
           </div>
         </div>
       </div>
       
-      <!-- Right Side - Preview -->
+      <!-- Preview -->
       <div class="col-lg-6">
         <div class="preview-card">
           <div class="p-4" id="cv-preview">
@@ -496,16 +418,13 @@
     </div>
   </div>
   
-  <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // Global variables
     let educations = [];
     let skills = [];
     let experiences = [];
     let profileImageData = "";
     
-    // Load saved data on page load
     window.onload = function() {
       const savedData = localStorage.getItem('cv_pro_data');
       if(savedData) {
@@ -525,18 +444,15 @@
           profileImageData = data.photo || '';
           
           if(profileImageData) {
-            const img = document.getElementById('cv-photo-preview');
-            img.src = profileImageData;
-            img.style.display = 'block';
+            document.getElementById('cv-photo-preview').src = profileImageData;
+            document.getElementById('cv-photo-preview').style.display = 'block';
           }
           
-          if(data.template) {
-            selectTemplate(data.template);
-          }
+          if(data.template) selectTemplate(data.template);
           
-          renderExperience();
           renderEducation();
           renderSkills();
+          renderExperience();
           generateCV();
         } catch(e) {
           console.log("Error loading data:", e);
@@ -544,107 +460,52 @@
       }
     };
     
-    // Compress image function
-    function compressImage(dataURL, maxWidth = 300, maxHeight = 300, quality = 0.7) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = dataURL;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          
-          if (width > height) {
-            if (width > maxWidth) {
-              height *= maxWidth / width;
-              width = maxWidth;
-            }
-          } else {
-            if (height > maxHeight) {
-              width *= maxHeight / height;
-              height = maxHeight;
-            }
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          resolve(canvas.toDataURL('image/jpeg', quality));
-        };
-      });
-    }
-    
-    // Photo upload function
     async function loadPhoto(event) {
       const file = event.target.files[0];
       if(file) {
         const reader = new FileReader();
-        reader.onloadend = async function() {
-          profileImageData = await compressImage(reader.result);
-          const output = document.getElementById('cv-photo-preview');
-          output.src = profileImageData;
-          output.style.display = 'block';
+        reader.onloadend = function() {
+          profileImageData = reader.result;
+          document.getElementById('cv-photo-preview').src = profileImageData;
+          document.getElementById('cv-photo-preview').style.display = 'block';
           generateCV();
-          showToast('Photo uploaded successfully!');
+          showToast('Photo uploaded!');
         }
         reader.readAsDataURL(file);
       }
     }
     
-    // Validation functions
     function validateEmail(input) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const isValid = emailRegex.test(input.value) || input.value === '';
-      input.classList.toggle('is-invalid', !isValid && input.value !== '');
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      input.classList.toggle('is-invalid', !regex.test(input.value) && input.value !== '');
     }
     
     function validatePhone(input) {
-      const phoneRegex = /^[\d\s\+\-\(\)]{10,}$/;
-      const isValid = phoneRegex.test(input.value) || input.value === '';
-      input.classList.toggle('is-invalid', !isValid && input.value !== '');
+      const regex = /^[\d\s\+\-\(\)]{10,}$/;
+      input.classList.toggle('is-invalid', !regex.test(input.value) && input.value !== '');
     }
     
-    // Template selection
     function selectTemplate(template) {
       const preview = document.getElementById('cv-preview');
-      const classicOption = document.getElementById('templateClassic');
-      const modernOption = document.getElementById('templateModern');
-      
-      if(template === 'classic') {
-        preview.className = 'p-4 template-classic';
-        classicOption.classList.add('active');
-        modernOption.classList.remove('active');
-      } else {
-        preview.className = 'p-4 template-modern';
-        modernOption.classList.add('active');
-        classicOption.classList.remove('active');
-      }
+      document.getElementById('templateClassic').classList.toggle('active', template === 'classic');
+      document.getElementById('templateModern').classList.toggle('active', template === 'modern');
+      preview.className = `p-4 template-${template}`;
     }
     
-    // Education functions
     function addEducation() {
       const degree = document.getElementById('degree').value;
       const institution = document.getElementById('institution').value;
-      const passingYear = document.getElementById('passingYear').value;
+      const year = document.getElementById('passingYear').value;
       const cgpa = document.getElementById('cgpa').value;
       
-      if(degree && institution && passingYear) {
-        educations.push({
-          degree, 
-          institution, 
-          passingYear, 
-          cgpa: cgpa || 'N/A'
-        });
-        
+      if(degree && institution && year) {
+        educations.push({degree, institution, year, cgpa: cgpa || 'N/A'});
         renderEducation();
-        
         document.getElementById('degree').value = '';
         document.getElementById('institution').value = '';
         document.getElementById('passingYear').value = '';
         document.getElementById('cgpa').value = '';
-        
-        showToast('Education added successfully!');
+        showToast('Education added!');
       } else {
         alert('Please fill Degree, Institution and Year!');
       }
@@ -652,38 +513,30 @@
     
     function renderEducation() {
       const container = document.getElementById('educationContainer');
-      const previewContainer = document.getElementById('cv-edu-preview');
+      const preview = document.getElementById('cv-edu-preview');
       
       container.innerHTML = '';
-      previewContainer.innerHTML = '';
+      preview.innerHTML = '';
       
-      educations.forEach((edu, index) => {
+      educations.forEach((edu, i) => {
         container.innerHTML += `
           <div class="education-item">
-            <div class="d-flex justify-content-between align-items-start">
-              <div class="flex-grow-1">
-                <div class="d-flex justify-content-between">
-                  <strong>${edu.degree}</strong>
-                  <span class="badge bg-primary">${edu.passingYear}</span>
-                </div>
-                <p class="mb-1 text-muted">${edu.institution}</p>
-                <small class="text-success">CGPA: ${edu.cgpa}</small>
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>${edu.degree}</strong> <span class="badge bg-primary">${edu.year}</span>
+                <p class="mb-0">${edu.institution}</p>
+                <small>CGPA: ${edu.cgpa}</small>
               </div>
-              <button class="btn btn-sm btn-outline-danger" onclick="removeEducation(${index})">
-                <i class="bi bi-trash"></i>
-              </button>
+              <button class="btn btn-sm btn-outline-danger" onclick="removeEducation(${i})">✕</button>
             </div>
           </div>
         `;
         
-        previewContainer.innerHTML += `
-          <div class="mb-3">
-            <div class="d-flex justify-content-between">
-              <strong>${edu.degree}</strong>
-              <span class="badge bg-secondary">${edu.passingYear}</span>
-            </div>
-            <p class="mb-0">${edu.institution}</p>
-            <small class="text-muted">CGPA: ${edu.cgpa}</small>
+        preview.innerHTML += `
+          <div class="mb-2">
+            <strong>${edu.degree}</strong> (${edu.year})<br>
+            ${edu.institution}<br>
+            <small>CGPA: ${edu.cgpa}</small>
           </div>
         `;
       });
@@ -692,77 +545,61 @@
     function removeEducation(index) {
       educations.splice(index, 1);
       renderEducation();
-      showToast('Education removed successfully!');
     }
     
-    // Skills functions
     function addSkill() {
-      const skillInput = document.getElementById('skillInput');
-      const skill = skillInput.value.trim();
-      
+      const input = document.getElementById('skillInput');
+      const skill = input.value.trim();
       if(skill && !skills.includes(skill)) {
         skills.push(skill);
         renderSkills();
-        skillInput.value = '';
-        showToast('Skill added successfully!');
+        input.value = '';
+        showToast('Skill added!');
       } else if(skills.includes(skill)) {
-        alert('This skill is already added!');
+        alert('Skill already exists!');
       } else {
-        alert('Please enter a skill!');
+        alert('Enter a skill!');
       }
     }
     
     function renderSkills() {
       const container = document.getElementById('skillsContainer');
-      const previewContainer = document.getElementById('cv-skills-preview');
+      const preview = document.getElementById('cv-skills-preview');
       
       container.innerHTML = '';
-      previewContainer.innerHTML = '';
+      preview.innerHTML = '';
       
-      skills.forEach((skill, index) => {
+      skills.forEach((skill, i) => {
         container.innerHTML += `
           <span class="skill-badge">
-            ${skill}
-            <i class="bi bi-x-circle-fill ms-2" onclick="removeSkill(${index})" style="cursor:pointer;"></i>
+            ${skill} <i class="bi bi-x-circle-fill ms-2" onclick="removeSkill(${i})" style="cursor:pointer;"></i>
           </span>
         `;
-        
-        previewContainer.innerHTML += `<span class="skill-badge">${skill}</span>`;
+        preview.innerHTML += `<span class="skill-badge">${skill}</span> `;
       });
     }
     
     function removeSkill(index) {
       skills.splice(index, 1);
       renderSkills();
-      showToast('Skill removed successfully!');
     }
     
-    // Experience functions
     function addExperience() {
       const company = document.getElementById('expCompany').value;
       const position = document.getElementById('expPosition').value;
-      const startDate = document.getElementById('expStartDate').value;
-      const endDate = document.getElementById('expEndDate').value || 'Present';
-      const description = document.getElementById('expDescription').value;
+      const start = document.getElementById('expStartDate').value;
+      const end = document.getElementById('expEndDate').value || 'Present';
+      const desc = document.getElementById('expDescription').value;
       
-      if(company && position && startDate && description) {
-        experiences.push({
-          company,
-          position,
-          startDate,
-          endDate,
-          description
-        });
-        
+      if(company && position && start && desc) {
+        experiences.push({company, position, start, end, desc});
         renderExperience();
-        
         document.getElementById('expCompany').value = '';
         document.getElementById('expPosition').value = '';
         document.getElementById('expStartDate').value = '';
         document.getElementById('expEndDate').value = '';
         document.getElementById('expDescription').value = '';
-        
-        showToast('Experience added successfully!');
+        showToast('Experience added!');
       } else {
         alert('Please fill Company, Position, Start Date and Description!');
       }
@@ -770,38 +607,30 @@
     
     function renderExperience() {
       const container = document.getElementById('experienceContainer');
-      const previewContainer = document.getElementById('cv-experience-preview');
+      const preview = document.getElementById('cv-experience-preview');
       
       container.innerHTML = '';
-      previewContainer.innerHTML = '';
+      preview.innerHTML = '';
       
-      experiences.forEach((exp, index) => {
+      experiences.forEach((exp, i) => {
         container.innerHTML += `
           <div class="experience-item">
-            <div class="d-flex justify-content-between align-items-start">
-              <div class="flex-grow-1">
-                <div class="d-flex justify-content-between">
-                  <strong>${exp.position}</strong>
-                  <span class="badge bg-warning text-dark">${exp.startDate} - ${exp.endDate}</span>
-                </div>
-                <p class="mb-1 text-primary fw-semibold">${exp.company}</p>
-                <p class="mb-1 small">${exp.description}</p>
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>${exp.position}</strong> <span class="badge bg-warning text-dark">${exp.start} - ${exp.end}</span>
+                <p class="mb-0 text-primary">${exp.company}</p>
+                <small>${exp.desc}</small>
               </div>
-              <button class="btn btn-sm btn-outline-danger" onclick="removeExperience(${index})">
-                <i class="bi bi-trash"></i>
-              </button>
+              <button class="btn btn-sm btn-outline-danger" onclick="removeExperience(${i})">✕</button>
             </div>
           </div>
         `;
         
-        previewContainer.innerHTML += `
-          <div class="mb-3">
-            <div class="d-flex justify-content-between">
-              <strong>${exp.position}</strong>
-              <span class="badge bg-secondary">${exp.startDate} - ${exp.endDate}</span>
-            </div>
-            <p class="mb-0 fw-semibold text-primary">${exp.company}</p>
-            <p class="mb-0 small">${exp.description}</p>
+        preview.innerHTML += `
+          <div class="mb-2">
+            <strong>${exp.position}</strong> (${exp.start} - ${exp.end})<br>
+            ${exp.company}<br>
+            <small>${exp.desc}</small>
           </div>
         `;
       });
@@ -810,23 +639,20 @@
     function removeExperience(index) {
       experiences.splice(index, 1);
       renderExperience();
-      showToast('Experience removed successfully!');
     }
     
-    // Generate CV preview
     function generateCV() {
       document.getElementById('cv-name-preview').innerText = document.getElementById('name').value || 'Your Name';
       document.getElementById('cv-title-preview').innerText = document.getElementById('title').value || 'Profession';
       
       const email = document.getElementById('emailInput').value || 'email@example.com';
-      const phone = document.getElementById('phone').value || '+1234567890';
+      const phone = document.getElementById('phone').value || 'phone';
       document.getElementById('cv-contact-preview').innerText = `${email} | ${phone}`;
       
       document.getElementById('cv-address-preview').innerText = document.getElementById('address').value || '';
       document.getElementById('cv-summary-preview').innerText = document.getElementById('summary').value || '';
     }
     
-    // Save to localStorage
     function saveToLocal() {
       const data = {
         name: document.getElementById('name').value,
@@ -835,26 +661,21 @@
         phone: document.getElementById('phone').value,
         address: document.getElementById('address').value,
         summary: document.getElementById('summary').value,
-        experiences: experiences,
-        educations: educations,
-        skills: skills,
+        experiences, educations, skills,
         photo: profileImageData,
-        template: document.getElementById('cv-preview').className.includes('template-modern') ? 'modern' : 'classic'
+        template: document.getElementById('cv-preview').className.includes('modern') ? 'modern' : 'classic'
       };
-      
       localStorage.setItem('cv_pro_data', JSON.stringify(data));
-      showToast('Data saved successfully!');
+      showToast('Data saved!');
     }
     
-    // Clear all data
     function clearData() {
-      if(confirm('Are you sure you want to clear all data?')) {
+      if(confirm('Clear all data?')) {
         localStorage.removeItem('cv_pro_data');
         location.reload();
       }
     }
     
-    // Export as JSON
     function exportAsJSON() {
       const data = {
         name: document.getElementById('name').value,
@@ -863,53 +684,65 @@
         phone: document.getElementById('phone').value,
         address: document.getElementById('address').value,
         summary: document.getElementById('summary').value,
-        experiences: experiences,
-        educations: educations,
-        skills: skills
+        experiences, educations, skills
       };
-      
       const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = 'cv_data.json';
       a.click();
-      URL.revokeObjectURL(url);
-      
-      showToast('JSON download started!');
+      showToast('JSON downloaded!');
     }
     
-    // Download PDF
     async function downloadPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       let y = 20;
       
-      // Name
-      doc.setFontSize(24);
-      doc.setTextColor(37, 99, 235);
-      doc.setFont("helvetica", "bold");
-      doc.text(document.getElementById('name').value.toUpperCase() || "YOUR NAME", 15, y);
-      y += 10;
+      // Try to add photo
+      if (profileImageData) {
+        try {
+          doc.addImage(profileImageData, 'JPEG', 15, y-5, 30, 30);
+          doc.setFontSize(20);
+          doc.setTextColor(37, 99, 235);
+          doc.setFont("helvetica", "bold");
+          doc.text(document.getElementById('name').value.toUpperCase() || "YOUR NAME", 50, y+5);
+          doc.setFontSize(12);
+          doc.setTextColor(100, 100, 100);
+          doc.setFont("helvetica", "normal");
+          doc.text(document.getElementById('title').value || "PROFESSIONAL TITLE", 50, y+15);
+          y += 35;
+        } catch(e) {
+          y = addTextHeader(doc, y);
+        }
+      } else {
+        y = addTextHeader(doc, y);
+      }
       
-      // Title
-      doc.setFontSize(14);
-      doc.setTextColor(100, 100, 100);
-      doc.setFont("helvetica", "normal");
-      doc.text(document.getElementById('title').value || "PROFESSIONAL TITLE", 15, y);
-      y += 10;
+      function addTextHeader(doc, y) {
+        doc.setFontSize(24);
+        doc.setTextColor(37, 99, 235);
+        doc.setFont("helvetica", "bold");
+        doc.text(document.getElementById('name').value.toUpperCase() || "YOUR NAME", 15, y);
+        y += 10;
+        doc.setFontSize(14);
+        doc.setTextColor(100, 100, 100);
+        doc.setFont("helvetica", "normal");
+        doc.text(document.getElementById('title').value || "PROFESSIONAL TITLE", 15, y);
+        return y + 10;
+      }
       
-      // Contact info
+      // Contact
       doc.setFontSize(10);
-      const contact = `${document.getElementById('emailInput').value || 'email@example.com'} | ${document.getElementById('phone').value || 'phone'}`;
+      doc.setTextColor(80, 80, 80);
+      const contact = `${document.getElementById('emailInput').value || 'email'} | ${document.getElementById('phone').value || 'phone'}`;
       doc.text(contact, 15, y);
       y += 5;
-      
       if (document.getElementById('address').value) {
         doc.text(document.getElementById('address').value, 15, y);
         y += 5;
       }
-      
       doc.line(15, y, 195, y);
       y += 10;
       
@@ -920,14 +753,12 @@
         doc.setFont("helvetica", "bold");
         doc.text("PROFESSIONAL SUMMARY", 15, y);
         y += 7;
-        
         doc.setFontSize(11);
         doc.setTextColor(60, 60, 60);
         doc.setFont("helvetica", "normal");
-        
-        const summaryLines = doc.splitTextToSize(document.getElementById('summary').value, 175);
-        doc.text(summaryLines, 15, y);
-        y += (summaryLines.length * 6) + 5;
+        const lines = doc.splitTextToSize(document.getElementById('summary').value, 175);
+        doc.text(lines, 15, y);
+        y += (lines.length * 6) + 5;
       }
       
       // Education
@@ -937,12 +768,12 @@
         doc.setFont("helvetica", "bold");
         doc.text("EDUCATION", 15, y);
         y += 7;
-        
         doc.setFontSize(11);
         doc.setTextColor(60, 60, 60);
+        doc.setFont("helvetica", "normal");
         
         educations.forEach(edu => {
-          doc.text(`• ${edu.degree} (${edu.passingYear})`, 15, y);
+          doc.text(`• ${edu.degree} (${edu.year})`, 15, y);
           y += 5;
           doc.text(`  ${edu.institution}`, 15, y);
           y += 5;
@@ -959,14 +790,12 @@
         doc.setFont("helvetica", "bold");
         doc.text("SKILLS", 15, y);
         y += 7;
-        
         doc.setFontSize(11);
         doc.setTextColor(60, 60, 60);
-        
         const skillsText = skills.join('  •  ');
-        const skillsLines = doc.splitTextToSize(skillsText, 175);
-        doc.text(skillsLines, 15, y);
-        y += (skillsLines.length * 6) + 5;
+        const lines = doc.splitTextToSize(skillsText, 175);
+        doc.text(lines, 15, y);
+        y += (lines.length * 6) + 5;
       }
       
       // Experience
@@ -976,36 +805,30 @@
         doc.setFont("helvetica", "bold");
         doc.text("WORK EXPERIENCE", 15, y);
         y += 7;
-        
         doc.setFontSize(11);
         doc.setTextColor(60, 60, 60);
         
         experiences.forEach(exp => {
-          doc.text(`• ${exp.position}`, 15, y);
+          doc.text(`• ${exp.position} (${exp.start} - ${exp.end})`, 15, y);
           y += 5;
-          doc.text(`  ${exp.company} | ${exp.startDate} - ${exp.endDate}`, 15, y);
+          doc.text(`  ${exp.company}`, 15, y);
           y += 5;
-          
-          const descLines = doc.splitTextToSize(`  ${exp.description}`, 170);
+          const descLines = doc.splitTextToSize(`  ${exp.desc}`, 170);
           doc.text(descLines, 15, y);
           y += (descLines.length * 5) + 5;
         });
       }
       
-      doc.save(`${document.getElementById('name').value || 'My'}_CV.pdf`);
-      showToast('PDF downloaded successfully!');
+      const fileName = (document.getElementById('name').value || 'CV').replace(/\s+/g, '_') + '.pdf';
+      doc.save(fileName);
+      showToast('PDF downloaded!');
     }
     
-    // Show toast notification
-    function showToast(message) {
+    function showToast(msg) {
       const toast = document.getElementById('toast');
-      const toastMessage = document.getElementById('toastMessage');
-      toastMessage.innerText = message;
+      document.getElementById('toastMessage').innerText = msg;
       toast.style.display = 'block';
-      
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 3000);
+      setTimeout(() => toast.style.display = 'none', 3000);
     }
   </script>
 </body>
